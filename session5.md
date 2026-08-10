@@ -1,4 +1,12 @@
-# Session 5: Reversing Commits and Safe Undo
+# Session 5: Safe Undo of Code Changes
+
+### Overview
+> **Required**:
+> - `Minions Visitorship` repository on GitLab
+
+`Minions Visitorship` is a project simulating an analysis of museum visitorship where all the visitors are minions from the Despicable Me franchise. It is similar to the Overseas Visitorship Survey analysis.
+
+<br>
 
 ### Reference Table
 <!-- Reference Table -->
@@ -42,36 +50,49 @@
 </table>
 
 
-### Session 5 Setup
-Required
-
-
-<hr>
+<br>
 
 
 ## Activity 1: Stashing Changes for Later
 
 
 
+<br>
+
+
 ## Activity 2: Viewing the State of the Repo at a Particular Commit
 
+#### a. Switch to the main branch of your local repo
+- Run `git branch` to list out the branches on your local repo
+- Run `git switch main` to switch to the main branch
+
+#### b. View the State of the Repo at a Particular Commit
+- Open the list of commits using `git log --oneline`
 
 ```python
 git checkout <hash>
 ```
 
-- This moves HEAD to that commit and updates your working directory to that snapshot. This is useful for quickly inspecting an old version of your project. You land in a **detached HEAD** state (where HEAD points at a commit instead of a branch, so any new commits you make here aren't on any branch). To leave and go back: `git switch -`
+- This moves HEAD to that commit and updates your working directory to that snapshot. This is useful for quickly inspecting an old version of your project. 
+- You land in a **detached HEAD** state (where HEAD points at a commit instead of a branch, so any new commits you make here aren't on any branch). 
+- To leave and go back, run `git switch -`
+
+
+<br>
 
 
 ## Activity 3: Discarding all commits after a particular commit
 
 
+<br>
+
 
 ## Activity 4: Reverting ONE commit
-a. Open the list of commits
+
+#### a. Open the list of commits
 
 
-b. Revert the commit `"TODO"`
+#### b. Revert the commit `"TODO"`
 
 ```python
 git revert <hash>
@@ -81,23 +102,32 @@ git revert <hash>
 - Use the flag `--no-edit` to skip the commit-message editor
 
 
-c. Revert the revert
+#### c. Revert the revert
 
 
-## Activity 4: Reverting the last commit without deleting your changes
-a. Make a minor change to `"TODO"`
+<br>
 
-b. Stage the change
 
-c. Commit the change with a message
+## Activity 5: Reverting the last commit without deleting your changes
 
-d. Revert the last commit but **KEEP the changes staged**
+#### a. Make a minor change to `"TODO"`
 
-e. Repeat parts b. to c. to commit the change again
+#### b. Stage the change
 
-f. Revert the last commit but **KEEP the changes unstaged**
+#### c. Commit the change with a message
+
+#### d. Revert the last commit but **KEEP the changes staged**
+
+#### e. Repeat parts b. to c. to commit the change again
+
+#### f. Revert the last commit but KEEP the changes unstaged
+
+<hr>
 
 Note: In this activity, we explored 2 ways to revert the last commit, but retain the changes in our working directory. The difference between this and Activity 4 is that the changes were reverted without leaving them in your working directory
 
 
-## Activity 5: Discard uncommited changes in your working directory
+<br>
+
+
+## Activity 6: Discard uncommited changes in your working directory
