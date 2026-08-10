@@ -1,0 +1,1 @@
+I group related activities into each session, and each session is expected to take between 30min to 1 hour/

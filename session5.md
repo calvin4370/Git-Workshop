@@ -1,0 +1,103 @@
+# Session 5: Reversing Commits and Safe Undo
+
+### Reference Table
+<!-- Reference Table -->
+<table>
+  <colgroup>
+    <col style="width: 40%">
+    <col style="width: 60%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>git restore --staged &lt;file&gt;</code><br><code>git restore --staged .</code></td>
+      <td>Unstage a specific file (keep changes)<br>Unstage all files</td>
+    </tr>
+    <tr>
+      <td><code>git restore &lt;file&gt;</code><br><strong><code>git restore .</code></strong></td>
+      <td>Discard changes in a specific file<br><strong>Discard all changes in working directory</strong></td>
+    </tr>
+    <tr>
+      <td><code>git reset --soft HEAD~1</code></td>
+      <td>Undo last commit (keep changes staged) *</td>
+    </tr>
+    <tr>
+      <td><code>git reset --mixed HEAD~1</code></td>
+      <td>Undo last commit (keep changes unstaged) *</td>
+    </tr>
+    <tr>
+      <td><code>git switch --detach &lt;hash&gt;</code></td>
+      <td>View the state of the repo at a previous commit</td>
+    </tr>
+    <tr>
+      <td><strong><code>git revert &lt;hash&gt;</code></strong></td>
+      <td>Revert a pushed commit by adding a new commit that inverses it — safe on shared branches since history isn't rewritten</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Session 5 Setup
+Required
+
+
+<hr>
+
+
+## Activity 1: Stashing Changes for Later
+
+
+
+## Activity 2: Viewing the State of the Repo at a Particular Commit
+
+
+```python
+git checkout <hash>
+```
+
+- This moves HEAD to that commit and updates your working directory to that snapshot. This is useful for quickly inspecting an old version of your project. You land in a **detached HEAD** state (where HEAD points at a commit instead of a branch, so any new commits you make here aren't on any branch). To leave and go back: `git switch -`
+
+
+## Activity 3: Discarding all commits after a particular commit
+
+
+
+## Activity 4: Reverting ONE commit
+a. Open the list of commits
+
+
+b. Revert the commit `"TODO"`
+
+```python
+git revert <hash>
+```
+
+- This creates a new commit that cancels out the changes made in the original commit
+- Use the flag `--no-edit` to skip the commit-message editor
+
+
+c. Revert the revert
+
+
+## Activity 4: Reverting the last commit without deleting your changes
+a. Make a minor change to `"TODO"`
+
+b. Stage the change
+
+c. Commit the change with a message
+
+d. Revert the last commit but **KEEP the changes staged**
+
+e. Repeat parts b. to c. to commit the change again
+
+f. Revert the last commit but **KEEP the changes unstaged**
+
+Note: In this activity, we explored 2 ways to revert the last commit, but retain the changes in our working directory. The difference between this and Activity 4 is that the changes were reverted without leaving them in your working directory
+
+
+## Activity 5: Discard uncommited changes in your working directory
