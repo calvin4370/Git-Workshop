@@ -104,26 +104,31 @@ Current working directory (aka present working directory / `pwd`) is the folder 
 - Run `cd sessions/session1` to navigate straight into session 1's folder
 - From there, run `cd ../session2` to navigate out one folder and immediately navigate into session 2's folder
 
-#### g. Keyboard shortcuts in the terminal
+#### g. Other useful commands and keyboard shortcuts in the terminal
 
-| Shortcut | Description |
+| Keyboard Shortcut | Description |
 | --- | --- |
 | `Tab` | Autocomplete a file or folder name |
 | `↑` / `↓` | Scroll through previous commands |
 | `Ctrl + C` | Cancel a running command |
 | `Ctrl + L` | Clear the screen (scrolls your view down, keeps the lines) |
-| `Ctrl + A` | Jump to the start of the line |
-| `Ctrl + E` | Jump to the end of the line |
+| `Ctrl + LeftArrow` | Move cursor to the left of the terminal line |
+| `Ctrl + RightArrow` | Move cursor to the right of the terminal line |
+
+| Useful Commands | Description |
+| --- | --- |
 | `clear` | Clear the terminal screen (deletes all lines) |
 | `history` | Show your command history |
+
+<hr>
 
 Try running `python scripts/infinite_loop.py` and interrupting it mid run using `Ctrl + C`. Then clear the terminal log with `clear`.
 
 <hr>
 
-This activity went through the terminal commands you will need to know to work with git. 
+This activity went through the terminal commands you will need to know to work effectively with git. 
 
-There are many more terminal commands like `touch` and `mkdir` that allow you to do everything from the terminal, but since we have a UI in analytics@gov, we do not need to use them.
+There are many more terminal commands like `touch` (for creating empty files) and `mkdir` (for creating empty folders) that allow you to do everything from the terminal, but since we have a UI in analytics@gov, we do not need to use them.
 
 Refer to [Git Summary Notes](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?source=copy_link), Section 0. Linux and the Terminal for more information.
 
@@ -150,7 +155,7 @@ git config --global core.editor nano
 ```
 
 - Git opens this editor when a command needs you to write a message e.g. `git commit`
-- Note: nano is already the default terminal text editor (and ONLY available one) on analytics@gov, but on your personal device, you may want to set this to VSCode using `git config --global core.editor code` for a nicer UI
+- Note: nano is already the default terminal text editor (and ONLY available one) on analytics@gov, but on your personal device, you may want to set this to your IDE of choice for a nicer UI (e.g. For VSCode, run `git config --global core.editor code`)
 
 #### c. Verify your config
 ```
@@ -221,6 +226,9 @@ git init
 - From the repo page, copy the HTTPS address of the remote repo
 - Ensure that you are in your new repo's folder in the terminal here, then run `git remote add origin <HTTPS_address>` to link your local repo to the remote repo on GitLab
 
+#### f. Set the default name for the main branch
+- While `master` is the default name for the main branch when you run `git init` to initialise a git repo, nowadays the convention is to name the main branch "`main`"
+- You can configure git to change the default name to main by running `git config --global init.defaultBranch main`
 
 
 <br>

@@ -16,6 +16,9 @@ The sessions should be done as close to one another as possible such that partic
 - Session 7: Team Workflow Standards
 - Session 8: Reinforcement Lab?
 
+For each session, participants will access this repo to read the session materials (e.g. `session1.md`). Some sessions may require them to access a separate repo concurrently, to practice git commands (e.g. `git clone`).
+
+
 ## Content
 Each session's content was derived from my [Git Summary Notes](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?source=copy_link) on Notion. I group related activities into each session.
 
