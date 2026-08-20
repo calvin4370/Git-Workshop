@@ -21,7 +21,9 @@ Each session's content was derived from my [Git Summary Notes](https://app.notio
 
 
 ## Datasets and materials
-- `Minions Visitorship` repo
-    - This is a project simulating an analysis of museum visitorship where all the visitors are minions from the Despicable Me franchise. It is similar to the Overseas Visitorship Survey analysis.
-    - `minions.csv` contains transaction-level data on visitorship to NHB's museums by the minions
-    - `analysis.ipynb` contains plots and analysises based on the minion visitorship data
+`Minions Visitorship` repo
+- This is a project simulating an analysis of museum visitorship where all the visitors are minions from the Despicable Me franchise. It is similar to the Overseas Visitorship Survey analysis.
+- `minions.csv` contains transaction-level data on visitorship to NHB's museums by the minions
+    - It was originally generated using Mirage
+    - I then used Python to make hourly transactions follow a more natural distribution throughout the day (Mirage only generates uniform distribution)
+- `analysis.ipynb` contains plots and analyses based on the minion visitorship data
