@@ -20,8 +20,8 @@ A **shell** is the program that reads the commands you type, interprets them, an
 <!-- Reference Table -->
 <table>
   <colgroup>
-    <col style="width: 40%">
-    <col style="width: 60%">
+    <col style="width: 30%">
+    <col style="width: 70%">
   </colgroup>
   <thead>
     <tr>
@@ -117,7 +117,7 @@ Current working directory (aka present working directory / `pwd`) is the folder 
 | `clear` | Clear the terminal screen (deletes all lines) |
 | `history` | Show your command history |
 
-TODO: Write a python file that runs an infinite loop to print to the terminal to demonstrate `Ctrl + C` and `clear`
+Try running `python scripts/infinite_loop.py` and interrupting it mid run using `Ctrl + C`. Then clear the terminal log with `clear`.
 
 <hr>
 

@@ -27,14 +27,30 @@
 
 ## Section 5: Ensuring Reproducibility
 
+#### Writing `requirements.txt`
+
+
+#### Using virtual environments
+
 
 <br>
 
 
 ## Activity 1: Using Virtual Environments using `venv`
 
+#### a. If you are using a Mac/Linux terminal (e.g. bash, zsh) <span style="color:cyan">(Analytics@gov uses bash)</span>
+
+
+#### b. If you are using a Windows terminal (e.g. Windows Powershell)
+
+
 
 <br>
 
 
 ## Activity 2: Using Virtual Environments using `uv`
+
+#### a. If you are using a Mac/Linux terminal (e.g. bash, zsh) <span style="color:cyan">(Analytics@gov uses bash)</span>
+
+
+#### b. If you are using a Windows terminal (e.g. Windows Powershell)
