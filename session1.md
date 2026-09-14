@@ -23,7 +23,3 @@
 ## Activity 4: Writing .gitignore
 
 
-<br>
-
-
-## Activity 5: Stashing Changes for Later

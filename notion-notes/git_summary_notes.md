@@ -1,3 +1,5 @@
+# Git Summary Notes
+
 ## 0. Linux and the Terminal
 
 <aside>
@@ -41,7 +43,7 @@ Note: Bash is case-sensitive.
         ls -la         # both combined
         ```
         
-    - To find documentation on what flags are available, see Git - Reference
+    - To find documentation on what flags are available, see [Git - Reference](https://git-scm.com/docs)
     Alternatively, run `<command> --help`, e.g. `git commit --help`, `git push --help`. Note: This may not work on Analytics@Gov as the command manuals are not available.
 
 **Navigation**
@@ -108,7 +110,7 @@ git config --list
 
 - GitLab → Profile Avatar → **User settings** → Access → Personal access tokens
     
-    !image.png
+    ![image.png](c9879a95-9339-4449-ad86-1cbc35d1b1dd.png)
     
     - Scopes needed: `read_repository`, `write_repository` (actually best to just tick all)
         - Scope also mean “Access Control” parameters (i.e. what actions you can do)
@@ -177,7 +179,7 @@ git config --list
 - Do this once per project to get a remote GitLab repo onto your machine.
 - You can copy the HTTPS address from Gitlab
 
-!image.png
+![image.png](image.png)
 
 ```bash
 git clone https://<your-gitlab-instance>/<team>/<repo>.git
@@ -194,20 +196,21 @@ git clone https://<your-gitlab-instance>/<team>/<repo>.git
     
     ```bash
     git init
+    git branch -m master main  # rename the "master" branch to "main"
+    
     git add .
     git commit -m "initial commit"
     ```
     
+    - Note: `git remote add origin` by default sets the first branch in the newly initialised repo to be called `master`. Nowadays, it is standard to name the main branch `main`
 2. **Create an empty repo on GitLab**
     - GitLab → Create Project → Create blank project → uncheck "initialise with README”
     - This ensures the remote repo is created empty, else there will be an error when you try to link to your git repo and you will not be able to push your local repo to Gitlab
 3. **Link your local repo to GitLab and push**
     - Get the HTTPS address from Gitlab and use `git remote add origin <HTTPS address>` to link the local repo to GitLab
-    - Note: `git remote add origin` by default sets the first branch in the newly initialised repo to be called `master`. Nowadays, it is standard to name the main branch `main`
     
     ```bash
     git remote add origin https://<your-gitlab-instance>/<team>/<repo>.git
-    git branch -m master main  # rename the "master" branch to "main"
     git push -u origin main  # push the local main branch to remote
     ```
     
@@ -223,11 +226,11 @@ git remote -v
 
 **Expected output:**
 
-!image.png
+![image.png](image%201.png)
 
 These should match the url of the repo on Gitlab (without the .git):
 
-!image.png
+![image.png](image%202.png)
 
 </aside>
 
@@ -257,11 +260,11 @@ git commit --amend -m "corrected message"    # rewrite message for the last comm
     
     Run `git commit` just like that to open a nano window for writing the commit message
     
-    !image.png
+    ![image.png](image%203.png)
     
     Write your multi line message in the space provided
     
-    !image.png
+    ![image.png](image%204.png)
     
     Press `Ctrl + X` to exit the nano window. If a commit message has been written, it will automatically commit
     
@@ -273,7 +276,7 @@ git commit --amend -m "corrected message"    # rewrite message for the last comm
 
 **Commit messages**
 
-Convention for writing commit messages (See Conventional Commit Messages): 
+Convention for writing commit messages (See [Conventional Commit Messages](https://www.conventionalcommits.org/en/v1.0.0/)): 
 
 ```html
 <type>(<optional scope>): <description>
@@ -342,7 +345,7 @@ E.g. `model: add GBT Classifier pipeline` |
 | `pipeline` | Changes to data pipeline or workflow steps. 
 E.g. `pipeline: add feature engineering step before model training` |
 
-We don’t have to stick to the above commit types strictly. We can come up with our own ones as a team. See Section 8: Team Workflow Standards
+We don’t have to stick to the above commit types strictly. We can come up with our own ones as a team. See [Section 8: Team Workflow Standards](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?pvs=21)
 
 </aside>
 
@@ -525,9 +528,48 @@ git fetch
 - Essentially it only downloads remote changes, but unlike `git pull`, it does not merge the changes, so it does not touch your working directory
 - **Sample output**
     
-    !image.png
+    ![image.png](image%205.png)
     
     - This shows there is currently only the `main` branch on the remote repo
+</aside>
+
+### Conflict Resolution
+
+<aside>
+
+### Merge Conflicts
+
+A merge happens whenever two lines of development need to be combined:
+
+- When you run `git pull` (this combines fetch + merge)
+- When you accept a MR on GitLab
+- When you run `git merge` directly in the terminal
+- Note: `git push` can never cause a merge conflict as Git will not allow you to push if the remote branch is ahead of your local branch (you will have to pull first)
+
+This can result in a **merge conflict** if two branches changed the same part of the same file and Git cannot automatically merge them. You will have to manually resolve this.
+
+</aside>
+
+<aside>
+
+### Resolving Conflicts
+
+- Git will mark the conflicting lines in affected file(s):
+- I recommend using the VSCode (code server) view provided by analytics@gov for this as it provides a readable UI to compare changes when resolving merge conflicts
+
+**VSCode view:**
+
+![image.png](image%206.png)
+
+1. Open the file and decide what the final version should look like
+2. Remove all the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
+3. Save the file, then:
+    
+    ```bash
+    git add <file>
+    git commit -m "fix: resolve merge conflict in <file>"
+    ```
+    
 </aside>
 
 ## 5. Branching
@@ -658,7 +700,7 @@ git push origin feature/visitor-forecast-model
     - if something goes wrong, you can simply delete the branch instead of having to manually find and revert bad changes
     - many people can work in parallel without getting in one another’s ways
 - `main` should always be in a working state (production). Branches are for development of messy or work in progress
-- See Conventional Branch for more information
+- See [Conventional Branch](https://conventionalbranch.org/) for more information
 </aside>
 
 ### Working Across Branches
@@ -709,22 +751,46 @@ git cherry-pick <hash1> <hash2> <hash3> # You can apply many commits at a time
 
 ## 6. Merge Requests and Code Review
 
+As we learnt from Sestion 5 on Branching, we do not commit our changes straight to `main` to prevent any bad changes from making it straight into production.
+
+Instead, we work on feature branches, until we finish a feature or set of specific changes. Once we are happy with it, we will merge our feature branch into main to merge in our changes.
+
+- The workflow for doing this is as follows:
+    
+    <aside>
+    
+    1. **We create a feature branch off main, say `pipeline/add-models`**
+    2. **We work on our changes in the branch, staging and committing changes locally as we go**
+        - By commiting changes, they are tracked locally in your local git repo
+        - Your teammates cannot see them yet, as all they can see is their own local repo, and the remote repo on GitLab
+    3. **Once we are done (or any time in between commits), we can push our commits to remote**
+        - This pushes the feature branch to the remote repo on GitLab where everyone in the team can see the code
+        - They can see the changes on the web, or even pull the branch to work on the code locally
+    4. **To merge the feature branch into `main` (or any other branch), we initialise a merge review on GitLab from our browser.**
+    5. **To merge the feature branch into main (or any other branch), we initiate a merge review on GitLab from our browser.**
+    6. **A reviewer, typically someone else on the team, will go through the changes in the feature branch**
+        - They can leave comments, approve or disapprove the merge request
+        - If the merge request is approved, the feature branch's changes can be merged into main
+        - This updates the main branch remotely, and other team members need to pull the main branch to get the changes locally.
+    </aside>
+    
+
 <aside>
 
 ### **Author: Opening a MR for branch → main**
 
 - **GitLab**
     1. Push your branch to remote using `git push` (or `git push -u origin <branch-name>` if pushing from a new feature branch for the first time)
-    2. Go to the repo page on GitLab, a prompt should appear immediately
+    2. Go to the repo page on GitLab, a prompt should appear immediately and persist for recent pushes to the remote repo
         
-        !image.png
+        ![image.png](image%207.png)
         
         Or if the prompt is not there anymore, create the MR manually
         `GitLab → Your repo → **Merge Requests → New Merge Request**`
         
     3. Set **source branch** to the feature branch, and **target branch** to `main`
         
-        !image.png
+        ![image.png](d03bd9b0-4421-4a04-8ddc-6de89f4c2b99.png)
         
     4. Fill in the MR description
     5. Assign a Reviewer
@@ -736,16 +802,16 @@ git cherry-pick <hash1> <hash2> <hash3> # You can apply many commits at a time
     1. Push your branch using `git push` (or `git push -u origin <branch>` if pushing from a new feature branch for the first time)
     2. Go to the repo page on GitHub, a prompt should appear immediately
         
-        !image.png
+        ![image.png](image%208.png)
         
         Or if the prompt is not there anymore, create the PR manually
         `GitHub → <Your repo page> → "Pull requests" tab → "New pull request" button`
         
-        !image.png
+        ![image.png](image%209.png)
         
     3. **base** should be `main` and **compare** should be the feature branch you are merging
         
-        !image.png
+        ![image.png](image%2010.png)
         
     4. Fill in the PR description
     5. Assign Reviewer(s)
@@ -766,8 +832,21 @@ git switch <source-branch>
 1. Run `git fetch` to get local knowledge on what remote branches are on GitLab
     - You will see something like `remotes/origin/<source-branch>`
 2. Run `git switch <source-branch>` to get a local copy tracking the remote branch
+    - For example, typing `git switch fix/sarimax`  (without the prefix `origin`
+    - The output looks likes below
+    
+    ```jsx
+    branch 'fix/sarimax-bug' set up to track 'origin/fix/sarimax-bug'.
+    Switched to a new branch 'fix/sarimax-bug'
+    ```
+    
 3. Now that you have a local copy of the branch, run the code and make sure all the objectives are met
 4. Approve / reject the merge request and leave comments
+
+Notes:
+
+- If you run a brand new `git clone <repository>` , the newly cloned repository will have all the branches and commits from the remote repository. By running `git branch -r` will list all remote repositories at the time of `git clone`.
+- Looking at `git branch -r` output `origin/fix-sarimax-bug`, do remember to delete the prefix `origin/` when switching branches. At local repository, the branch name will look like `fix/sarimax-bug`
 </aside>
 
 <aside>
@@ -775,46 +854,10 @@ git switch <source-branch>
 ### **Assignee: The one who actually merges**
 
 - Could also be the Author or Reviewer
+- From the Author perspective and if you want your code to be reviewed, set the `Assignee` to `Reviewer` right after the Pull Request is created. This is to trigger a notification to the `Reviewer` via GitHub or Email
 </aside>
 
-## 7. Conflict Resolution and Safe Undo
-
-<aside>
-
-### Merge Conflicts
-
-A merge happens whenever two lines of development need to be combined:
-
-- When you run `git pull` (this combines fetch + merge)
-- When you accept a MR on GitLab
-- When you run `git merge` directly in the terminal
-- Note: `git push` can never cause a merge conflict as Git will not allow you to push if the remote branch is ahead of your local branch (you will have to pull first)
-
-This can result in a **merge conflict** if two branches changed the same part of the same file and Git cannot automatically merge them. You will have to manually resolve this.
-
-</aside>
-
-<aside>
-
-### Resolving Conflicts
-
-- Git will mark the conflicting lines in affected file(s):
-- I recommend using the VSCode (code server) view provided by analytics@gov for this as it provides a readable UI to compare changes when resolving merge conflicts
-
-**VSCode view:**
-
-!image.png
-
-1. Open the file and decide what the final version should look like
-2. Remove all the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
-3. Save the file, then:
-    
-    ```bash
-    git add <file>
-    git commit -m "fix: resolve merge conflict in <file>"
-    ```
-    
-</aside>
+## 7. Safe Undo of Code Changes
 
 <aside>
 
@@ -841,7 +884,7 @@ rewriting remote commit history
 - **Common cases for safe undoing of code changes**
     - First, run `git log --oneline` while in the desired branch to get a list of commit hashes.
         
-        !image.png
+        ![image.png](image%2011.png)
         
     1. **You just want to see the code at the point of a specific commit**
         
@@ -915,6 +958,18 @@ rewriting remote commit history
 
 ## 8. Team Workflow Standards
 
+### Branching
+
+<aside>
+
+**Keeping main branch in a constant state of production**
+
+- `main` should always be in a working state (production branch). As such, never work directly on your local main branch and do not push changes straight to remote `main`
+- Whenever adding a new feature / change, branch off from `main` and push changes to that branch.
+- As often as possible, pull the latest changes from main into your feature branch to ensure you are kept up with the latest state of main, using [`git pull origin main`](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?pvs=21)
+- When ready to merge your changes to `main`, do not do it directly via `git merge`. Instead, open a merge request on GitLab and request review from teammates to ensure only working code is ever merged into `main`
+</aside>
+
 ### **Commits**
 
 <aside>
@@ -958,9 +1013,9 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
 - **1. Google style**
     - most readable at a glance and is widely used in data and ML teams
     
-    !image.png
+    ![image.png](image%2012.png)
     
-    !image.png
+    ![image.png](image%2013.png)
     
 - **2. NumPy style**
     - used in scientific Python libraries like NumPy, pandas, and scikit-learn
@@ -994,7 +1049,7 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
     
     This isn’t a docstring but it's a comment that just restates the same parameters readable from the method signature, without value adding
     
-    !image.png
+    ![image.png](image%2014.png)
     
 </aside>
 
@@ -1018,7 +1073,7 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
     <aside>
     
     - Python modules should have short, all-lowercase names. Underscores can be used in the module name if it improves readability.
-    - Python packages (folder of modules) should also have short, all-lowercase names, although the use of underscores is discouraged by PEP 8.
+    - Python packages (folder of modules) should also have short, all-lowercase names, although the use of underscores is discouraged by [PEP 8](https://peps.python.org/pep-0008/#package-and-module-names).
     
     ```bash
     my_project/
@@ -1075,8 +1130,8 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
     
     <aside>
     
-    - GitHub's guide on READMEs
-    - The Markdown Guide (for Markdown syntax)
+    - [GitHub's guide on READMEs](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
+    - [The Markdown Guide](https://www.markdownguide.org) (for Markdown syntax)
     </aside>
     
 </aside>
@@ -1138,7 +1193,7 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
                 
                 <aside>
                 
-                Below is a list of import statements in my python project, use them to generate a list of terminal commands each in the form of `pip index versions <package> --index-url https://ship-nexus.analytics.gov.sg/repository/pypi-proxy/simple/` which I can immediately copy and paste in my terminal to find the specific package versions. Only include the ones for the packages that are not already packaged with Python
+                Below is a list of import statements in my python project, use them to generate a list of terminal commands each in the form of `pip index versions <package> --index-url [https://ship-nexus.analytics.gov.sg/repository/pypi-proxy/simple/](https://ship-nexus.analytics.gov.sg/repository/pypi-proxy/simple/)` which I can immediately copy and paste in my terminal to find the specific package versions. Only include the ones for the packages that are not already packaged with Python
                 
                 **<Replace with output from step 1>**
                 
@@ -1172,7 +1227,7 @@ i.e. each commit should do **one thing** and leave the codebase in a working sta
         </aside>
         
 - **Using a virtual environment**
-    - If you don’t use a virtual environment, your computer would have all the python packages you have ever needed all in specific versions, e.g. analytics.gov provides `numpy==2.3.4`
+    - If you don’t use a virtual environment, your computer would have all the python packages you have ever needed all in specific versions, e.g. [analytics.gov](http://analytics.gov) provides `numpy==2.3.4`
     - If you then run a project which is written with packages of a significantly older or newer version, you may run into compatibility issues e.g. the museum forecasting repo uses `numpy==1.26.4` (a major version difference!)
     - e.g. functions and classes may have been added, removed, or changed significantly between versions, which can cause your code to break
     - Instead of having to reinstall specific versions of every package a project needs using the requirements.txt every single time, simply use a virtual environment, which creates an isolated Python environment for each project, with its own set of packages and versions that are independent of everything else on your computer
@@ -1326,7 +1381,7 @@ kiv
 
 **Want to revert a change / commit?**
 
-- See section on Safe Undo for the various cases
+- See section on [Safe Undo](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?pvs=21) for the various cases
 </aside>
 
 <aside>
@@ -1377,7 +1432,7 @@ kiv
         - Here I committed a change with the message `"feat(user-guide): Initialise user guide"` while on local main instead of a feature branch I had not created yet.
         - Running `git log --oneline`, observe that the commit hash of the wrong commit is `5d1307f` (the topmost one), copy it
         
-        !image.png
+        ![image.png](image%2011.png)
         
         - Follow the other steps above (in case 3b) to move the commit and clean up the local history (remote history is unaffected as nothing had been pushed yet)
         - Then, push from the correct branch when ready
@@ -1462,7 +1517,7 @@ directory to match the `HEAD` commit. |
 
 **Forking Example**
 
-- NUSMods (website, github) is a student-run, open-source project that comprises a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and access useful module-related information.
+- NUSMods ([website](https://nusmods.com/timetable/sem-1), [github](https://github.com/nusmodifications/nusmods)) is a student-run, open-source project that comprises a timetable builder and knowledge platform, providing students with a better way to plan their school timetable and access useful module-related information.
 - Its GitHub repo is run by a core team of student developers who do most of the development. Let’s say you are another student and want to help out, you see their list of pending issues on their GitHub repo and pick out a certain issue to fix: “Bug: course prerequisite tree does not work properly”
 - Because you have no write access to the repo, you don't have permission to edit their repo directly. So, you **fork** the repo (available since it is public for anyone to view). This creates your own personal copy of the entire NUSMods repo under your GitHub account, at that point in time, including all the remote branches currently listed.
 - You then have to **clone** this forked remote repo, so that you have a local copy to work on in your code editor.
