@@ -4,13 +4,24 @@
 <br>
 
 
-## Section 1: Writing Commits
+## Section 1: Conventional Commits
+
+Activities on feat: doc: refactor: chore: and pipeline:
+
+Think about what one-line description to use
+
+If necessary, add a body
+
+<br>
+
+
+## Section 2: Linking commits to GitLab
 
 
 <br>
 
 
-## Section 2: Branching
+## Section 3: Conventional Branching
 
 
 <br>

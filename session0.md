@@ -84,16 +84,16 @@ Current working directory (aka present working directory / `pwd`) is the folder 
 #### b. Navigate to the home directory
 - Run `cd ~` to ensure you are in the home directory. Every time you open Analytics@Gov, you will be put in the home directory.
 
-#### c. Navigate to the folder named `session1`
+#### c. Navigate to the folder named `session0`
 - From the home directory, run `cd sessions` to navigate into the folder containing all the session materials
 - Running `pwd` should now show your new location
-- Run `cd session1` to navigate into the folder containing Session 1's materials.
+- Run `cd session0` to navigate into the folder containing Session 0's materials.
 
-#### d. Navigate to the folder named `session2`
-- Try running `cd session2` from your current pwd.
-- You will notice that will not work, as there is no folder named "session2" in your current folder
+#### d. Navigate to the folder named `session1`
+- Try running `cd session1` from your current pwd.
+- You will notice that will not work, as there is no folder named "session1" in your current folder
 - You will need to walk back up one folder to find it. Run `cd ..` to do this
-- Then run `cd session2` to navigate into the correct folder
+- Then run `cd session1` to navigate into the correct folder
 
 #### e. Navigate to the previous folder
 - Run `cd -` to navigate to the folder you were previously in.
@@ -102,7 +102,7 @@ Current working directory (aka present working directory / `pwd`) is the folder 
 #### f. Try using longer paths with `cd`
 - Navigate to the home directory using `cd ~`
 - Run `cd sessions/session1` to navigate straight into session 1's folder
-- From there, run `cd ../session2` to navigate out one folder and immediately navigate into session 2's folder
+- From there, run `cd ../session1` to navigate out one folder and immediately navigate into session 1's folder
 
 #### g. Other useful commands and keyboard shortcuts in the terminal
 
@@ -196,12 +196,12 @@ cd ~
 ```
 
 #### b. Create a new directory
-- You can click the folder icon in the UI to create a folder in the current working directory. Name it anything you want e.g. `session1_repo_1`
+- You can click the folder icon in the UI to create a folder in the current working directory. Name it anything you want e.g. `session0_repo_1`
 - Alternatively, run this terminal command to create a folder in the current working directory
     ```
-    mkdir session1_repo_1
+    mkdir session0_repo_1
     ```
-- Navigate into the folder using `cd session1_repo_1`
+- Navigate into the folder using `cd session0_repo_1`
 
 #### c. Initialise the current folder as a Git repository locally
 ```
@@ -236,8 +236,8 @@ git init
 ## Activity 5: Creating a new remote repo on GitLab and cloning it locally
 
 #### a. Go to GitLab and create a new GitLab repository
-- You can name it whatever you want e.g. `Session 1 Repo 2`
-- GitLab will give it a machine-readable slug e.g. `Session-1-Repo-2`
+- You can name it whatever you want e.g. `Session 0 Repo 2`
+- GitLab will give it a machine-readable slug e.g. `Session-0-Repo-2`
 - You can just create it under your own GitLab account. No need to put it in the SPDM group.
 - Now you can tick `Add README` and add a license if you want
 
@@ -247,7 +247,7 @@ git init
 - Run `git clone <HTTPS_address>` from the home directory
 
 #### c. You now have a local copy of the remote repo you created on GitLab
-- The repo will be initalised locally as a folder in your home directory e.g. named `Session-1-Repo-2
+- The repo will be initalised locally as a folder in your home directory e.g. named `Session-0-Repo-2
 `
 - Navigate into this folder
 - Running `ls -a` should show the `.git` hidden folder
@@ -255,6 +255,6 @@ git init
 
 <br>
 
-## End of Session 1
+## End of Session 0
 - In the previous activity, we created a brand new remote repo on GitLab, and cloned a local copy so that we can start a new project from scratch
 - In the next session, we will clone an ongoing project from GitLab, so that we can learn how to collaborate within a team
