@@ -7,14 +7,16 @@ The sessions should be done as close to one another as possible such that partic
 
 
 ## Sessions
-- Session 1: Intro to Git Basics and GitLab Setup
-- Session 2: Local Workflows
-- Session 3: Remote Workflows
-- Session 4: Branching
-- Session 5: Safe Undo of Code Changes
-- Session 6: Merge Requests and Code Review
-- Session 7: Team Workflow Standards
-- Session 8: Reinforcement Lab?
+- Session 0: Intro to Git Basics and GitLab Setup
+- Session 1: Local Workflows
+- Session 2: Remote Workflows
+- Session 3: Branching
+- Session 4: Safe Undo of Code Changes
+- Session 5: Merge Requests and Code Review
+- Session 6: Team Workflow Standards
+- Session 7: Reinforcement Lab?
+
+Session 0 is a pre-workshop session to set up the required environment on analytics@gov and Gitlab
 
 For each session, participants will access this repo to read the session materials (e.g. `session1.md`). Some sessions may require them to access a separate repo concurrently, to practice git commands (e.g. `git clone`).
 

@@ -1,133 +1,26 @@
-# Session 5: Safe Undo of Code Changes
+# Session 5: Merge Requests and Code Review
 
-### Overview
-> **Required**:
-> - `Minions Visitorship` repository on GitLab
+As we learnt from Session 3 on Branching, we do not commit our changes straight to `main` to prevent any bad changes from making it straight into production.
 
-`Minions Visitorship` is a project simulating an analysis of museum visitorship where all the visitors are minions from the Despicable Me franchise. It is similar to the Overseas Visitorship Survey analysis.
+Instead, we work on feature branches, until we finish a feature or set of specific changes. Once we are happy with it, we will merge our feature branch into main to merge in our changes.
 
-<br>
+The workflow for doing this is as follows:
 
-### Reference Table
-<!-- Reference Table -->
-<table>
-  <colgroup>
-    <col style="width: 40%">
-    <col style="width: 60%">
-  </colgroup>
-  <thead>
-    <tr>
-      <th>Command</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>git restore --staged &lt;file&gt;</code><br><code>git restore --staged .</code></td>
-      <td>Unstage a specific file (keep changes)<br>Unstage all files</td>
-    </tr>
-    <tr>
-      <td><code>git restore &lt;file&gt;</code><br><strong><code>git restore .</code></strong></td>
-      <td>Discard changes in a specific file<br><strong>Discard all changes in working directory</strong></td>
-    </tr>
-    <tr>
-      <td><code>git reset --soft HEAD~1</code></td>
-      <td>Undo last commit (keep changes staged) *</td>
-    </tr>
-    <tr>
-      <td><code>git reset --mixed HEAD~1</code></td>
-      <td>Undo last commit (keep changes unstaged) *</td>
-    </tr>
-    <tr>
-      <td><code>git switch --detach &lt;hash&gt;</code></td>
-      <td>View the state of the repo at a previous commit</td>
-    </tr>
-    <tr>
-      <td><strong><code>git revert &lt;hash&gt;</code></strong></td>
-      <td>Revert a pushed commit by adding a new commit that inverses it — safe on shared branches since history isn't rewritten</td>
-    </tr>
-  </tbody>
-</table>
+1. We create a feature branch off main, say `pipeline/add-models`
+2. We work on our changes in the branch, staging and committing changes locally as we go
+    - By commiting changes, they are tracked locally in your local git repo
+    - Your teammates cannot see them yet, as all they can see is their own local repo, and the remote repo on GitLab
+3. Once we are done (or any time in between commits), we can push our commits to remote
+    - This pushes the feature branch to the remote repo on GitLab where everyone in the team can see the code
+    - They can now see the changes on the web, or even pull the branch to work on the code locally
+4. To merge the feature branch into main (or any other branch), we initiate a merge review on GitLab from our browser.
+5. A reviewer, typically someone else on the team, will go through the changes in the feature branch
+    - They can leave comments, approve or disapprove the merge request
+    - If the merge request is approved, the feature branch's changes can be merged into main
+    - This updates the main branch remotely, and other team members need to pull the main branch to get the changes locally.
 
 
 <br>
 
 
-## Activity 1: Stashing Changes for Later
-
-
-
-<br>
-
-
-## Activity 2: Viewing the State of the Repo at a Particular Commit
-
-#### a. Switch to the main branch of your local repo
-- Run `git branch` to list out the branches on your local repo
-- Run `git switch main` to switch to the main branch
-
-#### b. View the State of the Repo at a Particular Commit
-- Open the list of commits using `git log --oneline`
-
-```python
-git checkout <hash>
-```
-
-- This moves HEAD to that commit and updates your working directory to that snapshot. This is useful for quickly inspecting an old version of your project. 
-- You land in a **detached HEAD** state (where HEAD points at a commit instead of a branch, so any new commits you make here aren't on any branch). 
-- To leave and go back, run `git switch -`
-
-
-<br>
-
-
-## Activity 3: Discarding all commits after a particular commit
-
-
-<br>
-
-
-## Activity 4: Reverting ONE commit
-
-#### a. Open the list of commits
-
-
-#### b. Revert the commit `"TODO"`
-
-```python
-git revert <hash>
-```
-
-- This creates a new commit that cancels out the changes made in the original commit
-- Use the flag `--no-edit` to skip the commit-message editor
-
-
-#### c. Revert the revert
-
-
-<br>
-
-
-## Activity 5: Reverting the last commit without deleting your changes
-
-#### a. Make a minor change to `"TODO"`
-
-#### b. Stage the change
-
-#### c. Commit the change with a message
-
-#### d. Revert the last commit but **KEEP the changes staged**
-
-#### e. Repeat parts b. to c. to commit the change again
-
-#### f. Revert the last commit but KEEP the changes unstaged
-
-<hr>
-
-Note: In this activity, we explored 2 ways to revert the last commit, but retain the changes in our working directory. The difference between this and Activity 4 is that the changes were reverted without leaving them in your working directory
-
-
-<br>
-
-
-## Activity 6: Discard uncommited changes in your working directory
+## Activity 1: 

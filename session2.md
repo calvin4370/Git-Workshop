@@ -1,29 +1,43 @@
-# Session 2: Local Workflows
+# Session 2: Remote Workflows
 
-## Activity 1: Clone an ongoing project from GitLab
-
-
-<br>
-
-
-## Activity 2: Staging and Commiting Changes
+### Setup
+- This session continues straight from session 2
+- If not already done, clone the ongoing repo
+    - Make sure you are in your home directory using `cd ~`
+    - Run `git clone` TODO
 
 
 <br>
 
 
-## Activity 3: Writing Multi-line Commits
-
-- Note: We will go through conventions for writing commit messages in Session 7: Team Workflow Standards
+## Activity 1: Pushing and Pulling Changes
 
 
 <br>
 
 
-## Activity 4: Writing .gitignore
+## Activity 2: Conflict Resolution
 
 
 <br>
 
 
-## Activity 5: Stashing Changes for Later
+## Activity 3: Fixing Problems Preventing Pushing
+
+
+<br>
+
+
+## Activity 4: Fixing Problems Preventing Pulling
+
+
+<br>
+
+
+## Activity 5: Fetch vs Pull
+
+
+<br>
+
+
+## Activity 6: Forking a Repo
