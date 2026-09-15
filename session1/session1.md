@@ -1,5 +1,80 @@
 # Session 1: Local Workflows
 
+### Reference Table
+<!-- Reference Table -->
+<table>
+  <colgroup>
+    <col style="width: 40%">
+    <col style="width: 60%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>git clone &lt;HTTPS_address&gt;</code></td>
+      <td>Copy a remote repo from GitLab onto your machine as a new folder in your present working directory</td>
+    </tr>
+    <tr>
+      <td><code>git remote -v</code></td>
+      <td>Check which remote repo your local repo is linked to</td>
+    </tr>
+    <tr>
+      <td><code>git status</code></td>
+      <td>See what has changed, what is staged, and what is untracked. Also tells you if the current folder is a git repo</td>
+    </tr>
+    <tr>
+      <td><code>git status --ignored</code></td>
+      <td>Also list files that are being ignored by <code>.gitignore</code></td>
+    </tr>
+    <tr>
+      <td><code>git status -u</code></td>
+      <td>List every untracked file individually, instead of collapsing untracked folders into one line (short for <code>--untracked-files=all</code>)</td>
+    </tr>
+    <tr>
+      <td><code>git add &lt;file&gt;</code><br><code>git add file1 file2 file_n</code><br><code>git add .</code></td>
+      <td>Stage a specific file<br>Stage a variable number of files at once<br>Stage everything in the present working directory</td>
+    </tr>
+    <tr>
+      <td><code>git commit -m "commit message"</code></td>
+      <td>Commit staged changes with a single-line message</td>
+    </tr>
+    <tr>
+      <td><code>git commit</code></td>
+      <td>Opens a nano window for you to write multi-line commit messages</td>
+    </tr>
+    <tr>
+      <td><code>git commit --amend -m "corrected message"</code></td>
+      <td>Rewrite the message of the last commit (only if not yet pushed)</td>
+    </tr>
+    <tr>
+      <td><code>git commit --amend --no-edit</code></td>
+      <td>Add your currently staged changes into the last commit, keeping its message (only if not yet pushed)</td>
+    </tr>
+    <tr>
+      <td><code>git log</code><br><code>git log --oneline</code><br><code>git log -n &lt;number&gt;</code></td>
+      <td>View commit history<br>View commit history (condense each into one line)<br>Only show the latest <code>&lt;number&gt;</code> commits</td>
+    </tr>
+    <tr>
+      <td><code>git rm --cached &lt;file&gt;</code><br><code>git rm -r --cached &lt;folder&gt;</code></td>
+      <td>Stop tracking a file that was already committed, without deleting it from your machine<br>Same, for a whole folder</td>
+    </tr>
+    <tr>
+      <td><code>git check-ignore -v &lt;file&gt;</code></td>
+      <td>Show which line of which <code>.gitignore</code> is causing a file to be ignored</td>
+    </tr>
+  </tbody>
+</table>
+
+> **Tip:** `git log` and `git diff` open their output in a scrollable viewer when it does not fit on your screen. Use `↑` / `↓` to scroll and press **`q`** to quit and get back to your terminal.
+
+
+<br>
+
+
 ## Activity 1: Initialise a git repo on Gitlab and clone it locally
 >Setup
 >- This session continues straight from Session 0

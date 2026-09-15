@@ -15,4 +15,6 @@
 ## Activity 2: Stashing Changes for Later
 > When you have uncommitted changes 
 
+
 ## Activity 3: 
+
