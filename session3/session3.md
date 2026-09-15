@@ -9,3 +9,10 @@
 - See [Git Summary Notes](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?source=copy_link) Section 5. Branching for more information
 
 ## Activity 1: Creating a Feature Branch
+
+
+
+## Activity 2: Stashing Changes for Later
+> When you have uncommitted changes 
+
+## Activity 3: 

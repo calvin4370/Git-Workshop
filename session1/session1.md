@@ -34,7 +34,7 @@
 
 ## Activity 3: Writing Multi-line Commits
 
-- Note: We will go through conventions for writing commit messages in Session 6: Team Workflow Standards
+>- Note: We will go through conventions for writing commit messages in Session 6: Team Workflow Standards
 
 
 <br>
@@ -47,6 +47,10 @@
 
 
 ## Activity 5: Using the VSCode IDE for a more user-friendly UI
+### Staging and Unstaging Changes
+
+
+### Committing Changes
 
 
 <br>
