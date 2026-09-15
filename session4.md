@@ -52,15 +52,25 @@
 
 <br>
 
+<aside>
 
-## Activity 1: Stashing Changes for Later
+**Background info:**
+
+- **Untracked** files are files that have never been staged to Git (`git add`), such as a new file or new pipeline outputs.
+    - Git doesn't track their changes, and `git restore` ignores them.
+    - Once you stage a new file, they become **tracked** by Git
+- **Staged** files are changes you've marked with `git add` to go into your next commit. They're held in the *staging area* until you commit them
+- **Unstaged changes** are edits to tracked files that you have not staged yet. They exist only in your working directory.
+- **Committed changes** are saved permanently in the repo's history as a snapshot.
+- **Pushed changes** are commits uploaded to a remote repo such as one hosted on GitHub, where other people can pull them.
+</aside>
 
 
 
 <br>
 
 
-## Activity 2: Viewing the State of the Repo at a Particular Commit
+## Activity 1: Viewing the State of the Repo at a Particular Commit
 
 #### a. Switch to the main branch of your local repo
 - Run `git branch` to list out the branches on your local repo
@@ -81,13 +91,13 @@ git checkout <hash>
 <br>
 
 
-## Activity 3: Discarding all commits after a particular commit
+## Activity 2: Discarding all commits after a particular commit
 
 
 <br>
 
 
-## Activity 4: Reverting ONE commit
+## Activity 3: Reverting ONE commit
 
 #### a. Open the list of commits
 
@@ -108,7 +118,7 @@ git revert <hash>
 <br>
 
 
-## Activity 5: Reverting the last commit without deleting your changes
+## Activity 4: Reverting the last commit without deleting your changes
 
 #### a. Make a minor change to `"TODO"`
 
@@ -130,4 +140,4 @@ Note: In this activity, we explored 2 ways to revert the last commit, but retain
 <br>
 
 
-## Activity 6: Discard uncommited changes in your working directory
+## Activity 5: Discard uncommited changes in your working directory
