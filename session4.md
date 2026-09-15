@@ -52,19 +52,17 @@
 
 <br>
 
-<aside>
 
-**Background info:**
 
-- **Untracked** files are files that have never been staged to Git (`git add`), such as a new file or new pipeline outputs.
-    - Git doesn't track their changes, and `git restore` ignores them.
-    - Once you stage a new file, they become **tracked** by Git
-- **Staged** files are changes you've marked with `git add` to go into your next commit. They're held in the *staging area* until you commit them
-- **Unstaged changes** are edits to tracked files that you have not staged yet. They exist only in your working directory.
-- **Committed changes** are saved permanently in the repo's history as a snapshot.
-- **Pushed changes** are commits uploaded to a remote repo such as one hosted on GitHub, where other people can pull them.
-</aside>
-
+>**Background info:**
+>
+>- **Untracked** files are files that have never been staged to Git (`git add`), such as a new file or new pipeline outputs.
+>    - Git doesn't track their changes, and `git restore` ignores them.
+>    - Once you stage a new file, they become **tracked** by Git
+>- **Unstaged** changes are edits to tracked files that you have not staged yet. They exist only in your working directory.
+>- **Uncommitted** changes are staged changes you have not committed yet. They're held in the *staging area* until you commit them
+>- **Committed changes** are saved permanently in the repo's history as a snapshot.
+>- **Pushed changes** are commits uploaded to a remote repo such as one hosted on GitHub, where other people can pull them.
 
 
 <br>
