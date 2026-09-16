@@ -76,15 +76,15 @@
 
 
 ## Activity 1: Initialise a git repo on Gitlab and clone it locally
->Setup
->- This session continues straight from Session 0
->- You may reuse the GitLab repo you created in the previous session, or making one again
+>**Terms**
+>- Remote repo: The version of your repository hosted on GitLab / Github. This is the central copy that your whole team pushes to and pulls from.
+>- Local repo: The version of your repository on your own machine. This is where you make changes before pushing them up to the remote.
 
 #### a. Go to GitLab and create a new GitLab repository
 - You can name it whatever you want e.g. `Local Git Practice`
 - GitLab will give it a machine-readable slug e.g. `Local-Git-Practice`
 - You can just create it under your own GitLab account. No need to put it in the SPDM group.
-- Now you can tick `Add README` and add a license if you want
+- Tick `Add README`
 
 #### b. Clone the remote repo locally
 - In the repo page, copy the HTTPS address again
@@ -97,17 +97,140 @@
 - Running `ls -a` should show the `.git` hidden folder
 - You can also run `git status` to verify the current folder is a git repo
 
+#### d. Check your remote is configured correctly
+```
+git remote -v
+```
+- The two lines of output should match the URL of the repo on GitLab
+- `origin` is the alias Git gave the remote repo when you cloned it, so you don't have to type out the whole URL in future
+
+#### f. Look at your commit history
+```
+git log
+git log --oneline
+git log -n 2
+```
+
+- `git log` shows the full details of each commit: hash, author, date and message
+- `git log --oneline` condenses each commit into one line: a short hash and the message
+- `git log -n 2` only shows the 2 most recent commits. You can combine flags, e.g. `git log --oneline -n 2`
+
+<hr>
+
+- Press `q` to exit this screen in the terminal
+
+
+
 
 <br>
 
 
-## Activity 2: Staging and Commiting Changes
+## Activity 2: Staging, Commiting and Pushing Changes
+>**Background info:**
+>
+>- **Untracked** files are files that have never been staged to Git (`git add`), such as a new file or new pipeline outputs.
+>    - Git doesn't track their changes, and `git restore` ignores them.
+>    - Once you stage a new file, they become **tracked** by Git
+>- **Unstaged** changes are edits to tracked files that you have not staged yet. They exist only in your working directory.
+>- **Uncommitted** changes are staged changes you have not committed yet. They're held in the *staging area* until you commit them
+>- **Committed changes** are saved permanently in the repo's history as a snapshot.
+>- **Pushed changes** are commits uploaded to a remote repo such as one hosted on GitHub, where other people can pull them.
+
+#### a. Edit the README
+- Delete all the default text in `README.md`
+- You may add whatever text you want to it, e.g. `This is a README`
+- Observe that in the left sidebar, your file explorer highlights `README.md` in yellow (indicating it is a tracked file that has been modified)
+
+<hr>
+
+- Run `git status`
+  - You should see:
+    ```
+    On branch main
+    Your branch is up to date with 'origin/main'.
+
+    Changes not staged for commit:
+      (use "git add <file>..." to update what will be committed)
+      (use "git restore <file>..." to discard changes in working directory)
+    	modified:   README.md
+
+    no changes added to commit (use "git add" and/or "git commit -a")
+    ```
+  - This is an <u>unstaged change</u> <span style="color:skyblue">(the change is only in your working directory)</span>
+
+
+<hr>
+
+- Run `git add README.md` to stage your change
+- Then, run `git status`
+  - You should see:
+    ```
+    On branch main
+    Your branch is up to date with 'origin/main'.
+
+    Changes to be committed:
+      (use "git restore --staged <file>..." to unstage)
+    	modified:   README.md
+    ```
+  - This is now an <u>uncommitted change</u> <span style="color:skyblue">(the change is now in the staging area)</span>
+
+<hr>
+
+- Run `git commit -m "docs: update README"` to commit your staged change
+- Then, run `git status`
+  - You should see:
+    ```
+    On branch main
+    Your branch is ahead of 'origin/main' by 1 commit.
+      (use "git push" to publish your local commits)
+
+    nothing to commit, working tree clean
+    ```
+  - This is now a <u>committed change</u> <span style="color:skyblue">(the change is now saved to your local git repo)</span>
+  - `working tree clean` means your files match the latest commit exactly, so there is nothing left to stage or commit
+- Run `git log --oneline` to see your commit at the top of the history
+- Go on GitLab and find your repo.
+  - Look at the code.
+  - You will not find see the changes you made above, as GitHub hosts the remote Git repo, while your changes are still only on the local Git repo
+
+<hr>
+
+- Run `git push` to push all committed changes to remote
+- Then, run `git status`
+  - You should see:
+    ```
+    fefe
+    ```
+  - The change has now been <u>pushed</u> <span style="color:skyblue">(to the remote git repo hosted on GitLab)</span>
+- Now look at your GitLab repo (refresh the page)
+  - The updated code should now be visible on GitLab
 
 
 <br>
 
 
-## Activity 3: Writing Multi-line Commits
+## Activity 3: Staging and Committing Multiple Files at a Time
+#### a. 
+
+
+<br>
+
+
+## Activity 4: Other useful commands and arguments for local workflows
+#### a. Unstaging files
+
+#### b. Rewriting commit messages
+
+
+
+
+
+<br>
+
+
+## Activity 5: Writing Multi-line Commits
+
+
 
 >- Note: We will go through conventions for writing commit messages in Session 6: Team Workflow Standards
 
@@ -115,13 +238,7 @@
 <br>
 
 
-## Activity 4: Other useful commands and arguments for local workflows
-
-
-<br>
-
-
-## Activity 5: Using the VSCode IDE for a more user-friendly UI
+## Activity 6: Using the VSCode IDE for a more user-friendly UI
 ### Staging and Unstaging Changes
 
 
