@@ -1,3 +1,5 @@
+# Git Workshop
+
 ## Description
 The Git workshop is organised into 7 (or 8?) sessions, each taking up to 1 hour.
 
@@ -5,6 +7,9 @@ The sessions are designed to build off from the previous one and should be done 
 
 The sessions should be done as close to one another as possible such that participants do not completely forget what was gone through previously.
 
+
+## Instructions
+For each session, follow along the session materials in the `sessions` folder
 
 ## Sessions
 - Session 0: Intro to Git Basics and GitLab Setup
@@ -18,7 +23,7 @@ The sessions should be done as close to one another as possible such that partic
 
 Session 0 is a pre-workshop session to set up the required environment on analytics@gov and Gitlab
 
-For each session, participants will access this repo to read the session materials (e.g. `session1.md`). Some sessions may require them to access a separate repo concurrently, to practice git commands (e.g. `git clone`).
+For each session, participants will access this repo to read the session materials (e.g. `session1.md`). Some sessions may require you to access a separate repo concurrently, to practice git commands (e.g. `git clone`).
 
 
 ## Content

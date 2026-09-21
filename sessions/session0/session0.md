@@ -171,8 +171,15 @@ git config --list
 
 Analytics@Gov requires you to configure your PAT before you can push / pull from Analytics@Gov GitLab
 
-#### d. Go to Analytics@Gov GitLab and log in
-- TODO
+#### d. Go to Analytics@Gov GitLab to set up your PAT
+- GitLab Home screen → Profile Avatar (top-right) → Edit profile → Click the menu dropdown at the top-left of your screen → Access → Personal access tokens
+
+![GitLab Personal Access Tokens page](../../assets/pat-gitlab-page.png)
+
+- Click `Add new token`
+- Set any name and description you would like, and set expiration date for some time in the future.
+- Select ALL scopes (to ensure the new PAT allows you to perform all these actions in the future)
+- Generate the token, then record it (you will not be shown this token again, and would have to regenerate it if you forget)
 
 <hr>
 
@@ -186,27 +193,31 @@ This is the first of two ways to initialise a local git repo to start tracking y
 
 - You are about to start a new project from scratch (Note: In this case, it is preferred to use the 2nd method, shown in Activity 5)
 
-- Or if you have an ongoing / completed project in a folder but have not yet tracked it with Git. In this case, start from step `c.`
+- Or if you have an ongoing / completed project in a folder but have not yet tracked it with Git. In this case, start from step `d.`
 
 > **Required**:
 > 
-> - `minions.csv`
-> - `eda.ipynb`
+> - `data/minions.csv`
+> - `analysis.ipynb`
 
 #### a. Navigate to your home directory
 ```
 cd ~
 ```
 
-#### b. Create a new directory
-- You can click the folder icon in the UI to create a folder in the current working directory. Name it anything you want e.g. `session0_repo_1`
+#### b. Create a new directory containing an ongoing code project
+- You can click the folder icon in the UI to create a folder in the current working directory. Name it anything you want e.g. `init_repo_practice`
 - Alternatively, run this terminal command to create a folder in the current working directory
     ```
-    mkdir session0_repo_1
+    mkdir init_repo_practice
     ```
-- Navigate into the folder using `cd session0_repo_1`
+- Navigate into the folder using `cd init_repo_practice`
 
-#### c. Initialise the current folder as a Git repository locally
+#### c. Copy over the codes for an ongoing `Minions Visitorship` analysis
+- Inside `Git-Workshop/data`, there are 2 files: `minions.csv` and `analysis.ipynb`. Copy them over into your `init_repo_practice` folder
+- The folder `init_repo_practice`, is now an example of an ongoing code project you have not yet started tracking with Git
+
+#### c. Initialise the folder as a Git repository locally
 ```
 git init
 ```
@@ -218,13 +229,13 @@ git init
 
 
 #### d. Rename the main branch
-- Note: By default `git init` initialises the local repo with its 1st branch named `master`. 
-- This is an old convention, and nowadays developers name the main branch "main"
+- Note: By default `git init` initialises the local repo with its 1st branch named `master`. This is an old convention, and nowadays developers name the main branch "`main`"
 - Run `git branch -m master main` to rename the "master" branch to "main"
 
 #### e. Link the local repo to a remote repo on GitLab
 - Go to GitLab and create a new repository.
     - You can create it under your own namespace which places it under your account's ownership (no need to place it in SPDM's group)
+    - Name the GitLab repo `init_repo_practice`, or whatever you named the folder to match it (not necessary but good for preventing confusion)
     - Make sure to untick `Add README`
 - From the repo page, copy the HTTPS address of the remote repo
 - Ensure that you are in your new repo's folder in the terminal here, then run `git remote add origin <HTTPS_address>` to link your local repo to the remote repo on GitLab
@@ -234,25 +245,28 @@ git init
 - You can configure git to change the default name to main by running `git config --global init.defaultBranch main`
 
 
+
 <br>
 
 ## Activity 5: Creating a new remote repo on GitLab and cloning it locally
 
+> Note: 
+> - This is the typical way to initialise a git repo, by first creating it on GitLab, then cloning a local copy onto our machines
+
 #### a. Go to GitLab and create a new GitLab repository
-- You can name it whatever you want e.g. `Session 0 Repo 2`
-- GitLab will give it a machine-readable slug e.g. `Session-0-Repo-2`
-- You can just create it under your own GitLab account. No need to put it in the SPDM group.
+- You can name it whatever you want e.g. `Gitlab Repo Test`
+- GitLab will give it a machine-readable slug e.g. `Gitlab-Repo-Test`
+- You can just create it under your own GitLab account (No need to put it in the SPDM group)
 - Now you can tick `Add README` and add a license if you want
 
 #### b. Clone the remote repo locally
 - In the repo page, copy the HTTPS address again
-- In your terminal, ensure you are in the home directory. If not, navigate there using `cd ~`
+- In your code editor's terminal, ensure you are in the home directory. If not, navigate there using `cd ~`
 - Run `git clone <HTTPS_address>` from the home directory
 
 #### c. You now have a local copy of the remote repo you created on GitLab
-- The repo will be initalised locally as a folder in your home directory e.g. named `Session-0-Repo-2
-`
-- Navigate into this folder
+- The repo will be initalised locally as a folder in your home directory e.g. named `Gitlab-Repo-Test`
+- Navigate into this folder using `cd Gitlab-Repo-Test`
 - Running `ls -a` should show the `.git` hidden folder
 - You can also run `git status` to verify the current folder is a git repo
 
