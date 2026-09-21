@@ -77,22 +77,23 @@ Current working directory (aka present working directory / `pwd`) is the folder 
     - If you are using JupyterLab, click the terminal tab to open the terminal
     - Otherwise, if you are on the VSCode server, you can `` Ctrl + ` `` to open the terminal at the bottom of your screen
 - Run `pwd` in your terminal
-    - You should see something like `TODO`
+    - You should see something like `/home/jovyan`
 - Run `ls` in your terminal
     - You should see a list of all the files and folders in your present working directory
 
 #### b. Navigate to the home directory
-- Run `cd ~` to ensure you are in the home directory. Every time you open Analytics@Gov, you will be put in the home directory.
+- Run `cd ~` to ensure you are in the home directory. Every time you open Analytics@Gov, you will be put in the home directory (`/home/jovyan`)
 
 #### c. Navigate to the folder named `session0`
-- From the home directory, run `cd sessions` to navigate into the folder containing all the session materials
-- Running `pwd` should now show your new location
-- Run `cd session0` to navigate into the folder containing Session 0's materials.
+- From the home directory, run `cd sessions` to navigate into the folder containing all session materials for this workshop
+- Run `pwd` to show your new location
+- Run `cd session0` to navigate into Session 0's folder
+- Run `pwd` again to show your new location
 
 #### d. Navigate to the folder named `session1`
 - Try running `cd session1` from your current pwd.
-- You will notice that will not work, as there is no folder named "session1" in your current folder
-- You will need to walk back up one folder to find it. Run `cd ..` to do this
+- You will notice that will not work, as there is no folder named "session1" in your current folder (You can verify this by running `ls` to show the files and folders in your current directory)
+- You will need to walk back up one folder to find it. Run `cd ..` to do so
 - Then run `cd session1` to navigate into the correct folder
 
 #### e. Navigate to the previous folder
@@ -126,9 +127,9 @@ Try running `python scripts/infinite_loop.py` and interrupting it mid run using 
 
 <hr>
 
-This activity went through the terminal commands you will need to know to work effectively with git. 
+<span style="color:salmon">This activity went through the terminal commands you will need to know to work effectively with Git. They are necessary to ensure you are in the correct directory before running git commands.</span>
 
-There are many more terminal commands like `touch` (for creating empty files) and `mkdir` (for creating empty folders) that allow you to do everything from the terminal, but since we have a UI in analytics@gov, we do not need to use them.
+There are many more terminal commands like `touch` (for creating empty files) and `mkdir` (for creating empty folders) that allow you to do everything a programmer needs to do from the terminal, but since we have a UI in analytics@gov / other IDEs, we do not need to use them.
 
 Refer to [Git Summary Notes](https://app.notion.com/p/Git-Summary-Notes-3721331f71ad80baa433c93e25383627?source=copy_link), Section 0. Linux and the Terminal for more information.
 
@@ -147,7 +148,7 @@ git config --global user.email "your_email@agency.gov.sg"
 ```
 - You can use any short name for your `user.name`
 - You will need to use your NHB email for `user.email` as that is required for Analytics@Gov authentication
-- `--global` applies this across every repo on your account, so you only do it once
+- `--global` applies this across every repo on your account, so you only need to do this once
 
 #### b. Set your default terminal text editor
 ```
@@ -155,7 +156,7 @@ git config --global core.editor nano
 ```
 
 - Git opens this editor when a command needs you to write a message e.g. `git commit`
-- Note: nano is already the default terminal text editor (and ONLY available one) on analytics@gov, but on your personal device, you may want to set this to your IDE of choice for a nicer UI (e.g. For VSCode, run `git config --global core.editor code`)
+- Note: nano is already the default terminal text editor (and ONLY available one) on analytics@gov, but on your personal device, you may want to set this to your IDE of choice for a more user-friendly UI/UX (e.g. For VSCode, run `git config --global core.editor code`)
 
 #### c. Verify your config
 ```
@@ -164,7 +165,9 @@ git config --list
 
 - Look for `user.name`, `user.email` and `core.editor` in the output
 
-**Set up your GitLab Personal Access Token (PAT)**
+<hr>
+
+**Next, set up your GitLab Personal Access Token (PAT)**
 
 Analytics@Gov requires you to configure your PAT before you can push / pull from Analytics@Gov GitLab
 
@@ -179,7 +182,7 @@ We will test our PATs to ensure they are working in the next activity.
 
 ## Activity 4: Initialising a folder as a local Git repo and linking it to GitLab
 
-This is 1 of the ways to initialise a local git repo to start tracking your changes. You can do this if:
+This is the first of two ways to initialise a local git repo to start tracking your changes. You can do this if:
 
 - You are about to start a new project from scratch (Note: In this case, it is preferred to use the 2nd method, shown in Activity 5)
 
