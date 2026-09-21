@@ -136,6 +136,8 @@ git log -n 2
 >- **Committed changes** are saved permanently in the repo's history as a snapshot.
 >- **Pushed changes** are commits uploaded to a remote repo such as one hosted on GitHub, where other people can pull them.
 
+![The 4 areas of Git](../../assets/git-4-areas.png)
+
 #### a. Edit the README
 - Delete all the default text in `README.md`
 - You may add whatever text you want to it, e.g. `This is a README`
