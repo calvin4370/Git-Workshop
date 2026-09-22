@@ -1,4 +1,4 @@
-# Session 2: Remote Workflows
+# Session 2: Remote and Team Workflows
 > In Session 1, you cloned a brand new, empty repo you created yourself on GitLab
 >
 > This time, we will clone a repo that already has files and a commit history, just like joining an ongoing project.

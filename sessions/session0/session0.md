@@ -238,6 +238,9 @@ git init
     - Name the GitLab repo `init_repo_practice`, or whatever you named the folder to match it (not necessary but good for preventing confusion)
     - Make sure to untick `Add README`
 - From the repo page, copy the HTTPS address of the remote repo
+
+    ![Copying the HTTPS address from GitLab](../../assets/gitlab%20http%20copy.png)
+
 - Ensure that you are in your new repo's folder in the terminal here, then run `git remote add origin <HTTPS_address>` to link your local repo to the remote repo on GitLab
 
 #### f. Set the default name for the main branch
@@ -255,18 +258,21 @@ git init
 
 #### a. Go to GitLab and create a new GitLab repository
 - You can name it whatever you want e.g. `Gitlab Repo Test`
-- GitLab will give it a machine-readable slug e.g. `Gitlab-Repo-Test`
+- GitLab will give it a machine-readable slug e.g. `gitlab-repo-test`
 - You can just create it under your own GitLab account (No need to put it in the SPDM group)
 - Now you can tick `Add README` and add a license if you want
 
 #### b. Clone the remote repo locally
-- In the repo page, copy the HTTPS address again
+- In the repo page, copy the HTTPS address
+
+    ![Copying the HTTPS address from GitLab](../../assets/gitlab%20http%20copy.png)
+
 - In your code editor's terminal, ensure you are in the home directory. If not, navigate there using `cd ~`
 - Run `git clone <HTTPS_address>` from the home directory
 
 #### c. You now have a local copy of the remote repo you created on GitLab
-- The repo will be initalised locally as a folder in your home directory e.g. named `Gitlab-Repo-Test`
-- Navigate into this folder using `cd Gitlab-Repo-Test`
+- The repo will be initalised locally as a folder in your home directory e.g. named `gitlab-repo-test`
+- Navigate into this folder using `cd gitlab-repo-test`
 - Running `ls -a` should show the `.git` hidden folder
 - You can also run `git status` to verify the current folder is a git repo
 
