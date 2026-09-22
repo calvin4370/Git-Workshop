@@ -29,7 +29,6 @@ rng = np.random.default_rng(SEED)
 mirage = pd.read_excel(INPUT_DATA_PATH)
 
 NAME_PROPORTIONS = mirage['Name'].value_counts(normalize=True)
-MUSEUM_PROPORTIONS = mirage['Museum'].value_counts(normalize=True)
 REDEMPTION_PROPORTIONS = mirage['Redemption Status'].value_counts(normalize=True)
 VISIT_DATE_START = pd.to_datetime(mirage['Visit Date']).min()
 VISIT_DATE_END = pd.to_datetime(mirage['Visit Date']).max()
@@ -57,8 +56,34 @@ df['Name'] = rng.choice(NAME_PROPORTIONS.index, size=NUM_ROWS, p=NAME_PROPORTION
 
 
 # Add Museum
-# Museum visited, sampled from the Mirage dataset's museum frequencies
-# (NMS > ACM > MHC ~ IHC > TPM).
+# Museum visited, sampled in proportion to each museum's actual total visits
+# over 2024-2025 (NMS ~56%, ACM ~24%, IHC ~12%, TPM ~9%).
+# Source: SingStat Table Builder M891071, Visits To Selected Places Of
+# Interest, Monthly (thousands), fetched 22 Sep 2026.
+# MHC is left out: it was closed for its revamp in 2024-2025.
+MONTHLY_VISITS_THOUSANDS = {
+    'NMS': {
+        2024: [80.4, 99.5, 69.6, 58.3, 68.2, 73.3, 139.7, 155.7, 70, 80, 59.4, 62.7],
+        2025: [102.1, 74.8, 53.9, 55, 76.1, 65.9, 119.1, 167.7, 83, 96.5, 65.3, 78.9],
+    },
+    'ACM': {
+        2024: [35.6, 38.8, 37.7, 28.5, 34.7, 33.1, 39.2, 39.3, 25.7, 36.2, 34.1, 22.7],
+        2025: [38.4, 37.8, 31.9, 32.3, 49.4, 39.6, 41.3, 40.2, 34.8, 43, 46.4, 29],
+    },
+    'TPM': {
+        2024: [11.6, 13.3, 18.4, 10.5, 13.8, 13.7, 15.3, 23.9, 15.5, 11.9, 10.3, 9.1],
+        2025: [11.4, 10.9, 23.8, 18.2, 16.1, 13.7, 13, 22.8, 12, 10.9, 10.7, 9.9],
+    },
+    'IHC': {
+        2024: [24.3, 18.1, 15.5, 20.5, 18.3, 11.3, 22.2, 18.2, 13.7, 43.9, 11, 6.3],
+        2025: [20.3, 16.3, 13.3, 19.4, 17.9, 8.6, 22.3, 17.5, 15.1, 38.3, 12.6, 5.9],
+    },
+}
+museum_totals = pd.Series({
+    museum: sum(sum(months) for months in years.values())
+    for museum, years in MONTHLY_VISITS_THOUSANDS.items()
+})
+MUSEUM_PROPORTIONS = museum_totals / museum_totals.sum()
 df['Museum'] = rng.choice(MUSEUM_PROPORTIONS.index, size=NUM_ROWS, p=MUSEUM_PROPORTIONS.values)
 # print(df['Museum'].value_counts(normalize=True))
 
@@ -66,15 +91,14 @@ df['Museum'] = rng.choice(MUSEUM_PROPORTIONS.index, size=NUM_ROWS, p=MUSEUM_PROP
 # Add Nationality
 # Hardcoded proportions of nationalities for minions
 NATIONALITY_PROPORTIONS = {
-    'Singapore': 0.14,
-    'PR': 0.03,
-    'China': 0.20,
-    'Indonesia': 0.11,
+    'Singapore': 0.10,
+    'PR': 0.08,
+    'China': 0.15,
+    'Indonesia': 0.10,
     'Malaysia': 0.10,
-    'Philippines': 0.08,
-    'Japan': 0.15,
-    'US': 0.09,
-    'Australia': 0.10,
+    'Philippines': 0.09,
+    'Japan': 0.14,
+    'US': 0.24
 }
 # Each minion (unique name) has one nationality: build a minions subtable
 # with a randomly assigned nationality per name, then join it onto the
@@ -109,16 +133,16 @@ PRICES = {
     'ACM': {'Singaporean/PR': 0, 'Foreign/Tourist': 15},
     'TPM': {'Singaporean/PR': 0, 'Foreign/Tourist': 12},
     'IHC': {'Singaporean/PR': 0, 'Foreign/Tourist': 8},
-    'MHC': {'Singaporean/PR': 0, 'Foreign/Tourist': 6},
 }
 df['Price'] = [PRICES[museum][ticket] for museum, ticket in zip(df['Museum'], df['Lineitem name'])]
 # print(df.groupby(['Museum', 'Lineitem name'])['Price'].unique())
 
 
 # Add Visit Datetime
-# Date: sampled over the Mirage date range, weighted so weekends and public
-# holidays are ~1.8x busier than weekdays and school holidays ~1.3x.
-# MHC and IHC are closed on Mondays.
+# Date: sampled over the Mirage date range. Each museum's visits per month
+# follow its actual monthly visits (MONTHLY_VISITS_THOUSANDS, above). Within
+# a month, weekends and public holidays are ~1.8x busier than weekdays, and
+# IHC is closed on Mondays.
 # Time: museums open 10am-7pm (last entry 6.30pm). Weekdays have a late-
 # morning peak (~11am, school/tour groups) and a mid-afternoon peak (~3pm);
 # weekends and public holidays have one broad early-afternoon peak (~2pm).
@@ -128,26 +152,21 @@ PUBLIC_HOLIDAYS = pd.to_datetime([
     '2025-01-01', '2025-01-29', '2025-01-30', '2025-03-31', '2025-04-18', '2025-05-01',
     '2025-05-03', '2025-05-12', '2025-06-07', '2025-08-09', '2025-10-20', '2025-12-25',
 ])
-SCHOOL_HOLIDAYS = [
-    ('2024-03-09', '2024-03-17'), ('2024-05-25', '2024-06-23'),
-    ('2024-08-31', '2024-09-08'), ('2024-11-16', '2024-12-31'),
-    ('2025-03-15', '2025-03-23'), ('2025-05-31', '2025-06-29'),
-    ('2025-09-06', '2025-09-14'), ('2025-11-22', '2025-12-31'),
-]
-CLOSED_ON_MONDAYS = ['MHC', 'IHC']
+CLOSED_ON_MONDAYS = ['IHC']
 OPENING_HOUR, LAST_ENTRY_HOUR = 10, 18.5
 
 dates = pd.date_range(VISIT_DATE_START, VISIT_DATE_END, freq='D')
 is_peak_day = (dates.dayofweek >= 5) | dates.isin(PUBLIC_HOLIDAYS)
-is_school_holiday = np.zeros(len(dates), dtype=bool)
-for start, end in SCHOOL_HOLIDAYS:
-    is_school_holiday |= (dates >= start) & (dates <= end)
-date_weights = np.where(is_peak_day, 1.8, 1.0) * np.where(is_school_holiday, 1.3, 1.0)
+date_weights = np.where(is_peak_day, 1.8, 1.0)
 
 visit_dates = np.empty(NUM_ROWS, dtype='datetime64[ns]')
 for museum in df['Museum'].unique():
     rows = (df['Museum'] == museum).to_numpy()
     weights = date_weights * ~((dates.dayofweek == 0) & (museum in CLOSED_ON_MONDAYS))
+    # Scale each month's days so the month's total weight = its actual visits
+    month_visits = np.array([MONTHLY_VISITS_THOUSANDS[museum][d.year][d.month - 1] for d in dates])
+    month_weight_sums = pd.Series(weights).groupby(dates.to_period('M')).transform('sum').to_numpy()
+    weights = weights / month_weight_sums * month_visits
     visit_dates[rows] = rng.choice(dates, size=rows.sum(), p=weights / weights.sum())
 visit_dates = pd.DatetimeIndex(visit_dates)
 
