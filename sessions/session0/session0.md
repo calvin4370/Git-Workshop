@@ -1,8 +1,8 @@
 # Session 0: Intro to Git Basics and GitLab Setup
 
-## Activity 1: Analytics.gov Environment Setup
+## Activity 1: Analytics.gov Environment and GitLab Setup
 
-Check if necessary TODO
+- Follow the [Analytics@Gov GitLab Integration Guide](https://docs.developer.tech.gov.sg/docs/ag-maestro-gitlab-guide/sections/home?product=MAESTRO) (TechPass required)
 
 
 <br>

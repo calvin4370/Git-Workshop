@@ -231,10 +231,9 @@ git log -n 2
 
 
 ## Activity 5: Writing Multi-line Commits
+>- Note: We will go through conventions for writing commit messages in depth in Session 6: Team Workflow Standards
 
 
-
->- Note: We will go through conventions for writing commit messages in Session 6: Team Workflow Standards
 
 
 <br>
