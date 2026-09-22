@@ -374,14 +374,188 @@ To save your commit message and quit:
 - Notice the notebook is stored as JSON, with `"cell_type"`, `"source"`, `"outputs"`, `"execution_count"` and `"metadata"` fields
 - Close it without saving
 
-#### b. Stage and commit the notebook
+<hr>
+
 - Run `git add .` to stage the newly added notebook
 - Run `git commit -m "add notebook"`
+- Run `git status`
+
+#### b. Run the notebook
+- Click `Run All` to run all the cells, then save the notebook (`Ctrl + S`)
+- Run `git status`
+  - Note that even though you did not change any code, and the notebook does not modify any other files, Git still shows that the notebook itself has been modified
+  - This is because each time a notebook cell runs, the notebook updates its **execution count** (the number in `[ ]` beside each cell), its **outputs** and sometimes its **metadata** (e.g. the kernel's Python version), and all of these are saved inside the `.ipynb` file
+- Run `git diff session1.ipynb` to see exactly what changed
+  - You should see that the `"execution_count"` values have changed, even though the code in `"source"` is exactly the same
+  - Alternatively, open the diff view UI on VSCode or JupyterLab. It will highlight the inner parts of the notebook that got modified
+- Run `git restore session1.ipynb` to revert changes to `session1.ipynb` to its last tracked state in the staging area (`git add`)
+  - ⚠️ This permanently discards your changes. There is no undo for this command.
 
 <br>
 
-
 ## Activity 7: Writing .gitignore
+>We can tell Git which files and folders to ignore in a repo using a `.gitignore` file. This is useful for files you know you NEVER want to commit, including:
+>
+>- Secrets, API keys, credentials (e.g. `.env`). We will cover these in Session 2
+>- Log files (`*.log`)
+>- Auto-generated folders, e.g. `__pycache__/` for Python, `.ipynb_checkpoints/` for Jupyter, `.venv/` for virtual environments
+>- Operating system files (`.DS_Store` on Mac)
+>- For data teams, **data files**, which may be large or contain sensitive information that should not be stored on GitLab
 
+#### a. Create more files of various filetypes in your working directory
+- Create a 3rd .py file named `test.py`
+- Create a 2nd .ipynb file named `test.ipynb`
+- Create a .md file named `test.md`
+- Create a .txt file named `passwords.txt`
+
+<hr>
+
+- Run `git status`
+  - You should see:
+    ![Output of git status](../../assets/status-test.png)
+  - `.ipynb_checkpoints/` is a folder created by JupyterLab when you work with notebooks (JupyterLab hides it in the sidebar, but it is visible by Git)
+
+#### b. Create a .gitignore file in your working directory
+- Add this to it:
+  ```python
+  # Python and Jupyter generated folders
+  __pycache__/
+  .ipynb_checkpoints/
+  ```
+- Run `git status`
+  - You should see:
+    ![Output of git status](../../assets/gitignore1.png)
+  - All files in .ipynb_checkpoints/ have disappeared from 'Untracked files'
+
+<hr>
+
+- Next, add this to your .gitignore file:
+  ```python
+  # .md files
+  *.md
+  ```
+- Run `git status`
+  - You should see:
+    ![Output of git status](../../assets/gitignore2.png)
+  - `test.md` disappeared from 'Untracked files'
+  - It has also turned grey and faded in the left sidebar (VSCode feature)
+  - Note that README.md is STILL tracked by Git, as it has been staged and tracked before the .gitignore was updated. <span style="color:salmon">.gitignore does not retroactively ignore tracked files</span>
+
+<hr>
+
+- Next, add this to your .gitignore file:
+  ```python
+  # files starting with "test"
+  test*
+  ```
+- Run `git status`
+  - You should see:
+    ![Output of git status](../../assets/gitignore3.png)
+  - All newly added files starting with `"test"` have been ignored and appear grey in the left sidebar
+
+<hr>
+
+- Next, add this to your .gitignore file:
+  ```python
+  passwords.txt
+  ```
+- Similarly, `passwords.txt` is now ignored by Git
+- Run `git add .gitignore` and `git commit -m "add .gitignore"` to commit the stage and change (the .gitignore file itself is tracked by git and should be pushed to remote)
+- Run `git push`
+
+#### What if the file you want to gitignore has already been staged?
+- Create a new file named `api_key.txt` and type anything in it, e.g. `abc123`
+- Run `git add .` to stage it
+- Add this to your .gitignore file:
+  ```python
+  api_key.txt
+  ```
+- Run `git status`
+  - `api_key.txt` is still under `Changes to be committed`. Adding it to `.gitignore` did not unstage it
+- Unstage it using `git restore --staged api_key.txt`
+- Run `git status`
+  - `api_key.txt` has disappeared completely. Since it is no longer staged, Git treats it as a new untracked file, and the `.gitignore` rule now applies
+- Stage and commit your updated `.gitignore`:
+  ```
+  git add .gitignore
+  git commit -m "chore: ignore api_key.txt"
+  ```
+
+<hr>
+
+#### What if the file you want to gitignore has already been committed?
+- Create a new file named `debug.log` and type anything in it
+- Stage and commit it:
+  ```
+  git add debug.log
+  git commit -m "add debug log"
+  ```
+- Add this to your .gitignore file:
+  ```python
+  # log files
+  *.log
+  ```
+- Now edit `debug.log` (add another line) and save it
+- Run `git status`
+  - `debug.log` shows up as `modified`. Git is still tracking it, as it was committed before the `.gitignore` rule was added
+- To stop tracking it **without deleting it from your folder**, run:
+  ```
+  git rm --cached debug.log
+  ```
+  - `--cached` means "remove it from Git only". Without `--cached`, `git rm` deletes the file from your folder too
+  - For a whole folder, use `git rm -r --cached <folder>`
+- Run `git status`
+  - `debug.log` is staged as `deleted`. This means it will be removed from Git in the next commit
+  - Run `ls` to check that `debug.log` is still in your folder
+- Commit the change together with your updated `.gitignore`:
+  ```
+  git add .gitignore
+  git commit -m "chore: stop tracking debug.log"
+  ```
+- Run `git status`. `debug.log` no longer appears, even though you edited it
+
+> **Note:** `debug.log` is no longer tracked, but it is still in your local commit history (in the `add debug log` commit), and it will be uploaded to GitLab along with that commit the next time you push.
+>
+> If the file contains something sensitive and you have **not pushed yet**, you can erase it from history instead. If it was added in your **last** commit, run `git rm --cached <file>` then `git commit --amend --no-edit` to rewrite that commit without the file.
+
+<hr>
 
 #### What if the file you want to gitignore has already been pushed?
+- Create a new file named `raw_data.csv` and type anything in it
+- Stage, commit and push it:
+  ```
+  git add raw_data.csv
+  git commit -m "data: add raw data"
+  git push
+  ```
+- Check your GitLab repo. `raw_data.csv` is now on GitLab
+- Add this to your .gitignore file:
+  ```python
+  # data files
+  *.csv
+  ```
+- Stop tracking it, commit and push, just like before:
+  ```
+  git rm --cached raw_data.csv
+  git add .gitignore
+  git commit -m "chore: stop tracking raw_data.csv"
+  git push
+  ```
+- Check your GitLab repo again (refresh the page)
+  - `raw_data.csv` is gone from the list of files, but it is still in your local folder
+- Now go to your repo's commit history on GitLab (`Code` → `Commits`) and click on the `data: add raw data` commit
+  - `raw_data.csv` is **still there**. Anyone with access to the repo can still find it in the commit history
+
+<span style="color:salmon">Once a file is pushed, removing it only hides it from the latest version of the repo. It stays in the commit history on GitLab forever.</span>
+
+- Completely erasing a file from the remote history requires rewriting history, which is dangerous and messy when working in a team
+- If you ever push a password or API key, treat it as leaked, and change / regenerate it immediately. We will cover this in Session 2
+- This is why you should set up your `.gitignore` at the **start** of a project, before your first `git add .`
+
+
+
+<br>
+
+<hr>
+<h1 align="center">End of Session 1</h1>
+<hr>
