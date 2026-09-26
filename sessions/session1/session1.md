@@ -79,9 +79,9 @@
 <br>
 
 
-## Activity 1: Initialise a git repo on Gitlab and clone it locally
+## Activity 1: Initialise a git repo on GitLab and clone it locally
 >**Terms**
->- Remote repo: The version of your repository hosted on GitLab / Github. This is the central copy that your whole team pushes to and pulls from.
+>- Remote repo: The version of your repository hosted on GitLab / GitHub. This is the central copy that your whole team pushes to and pulls from.
 >- Local repo: The version of your repository on your own machine. This is where you make changes before pushing them up to the remote.
 
 #### a. Go to GitLab and create a new GitLab repository
@@ -99,7 +99,7 @@
 - Run `git clone <HTTPS_address>` from the home directory
 
 #### c. You now have a local copy of the remote repo you created on GitLab
-- The repo will be initalised locally as a folder in your home directory e.g. named `local-git-practice`
+- The repo will be initialised locally as a folder in your home directory e.g. named `local-git-practice`
 - Navigate into this folder using `cd local-git-practice`
 - Running `ls -a` should show the `.git` hidden folder
 
@@ -146,7 +146,7 @@ git log -n 2
 <br>
 
 
-## Activity 2: Staging, Commiting and Pushing Changes
+## Activity 2: Staging, Committing and Pushing Changes
 >**Background info:**
 >
 >- **Untracked** files are files that have never been staged to Git (`git add`), such as a new file or new pipeline outputs.
@@ -180,7 +180,7 @@ git log -n 2
 - Then, run `git status`
   - You should see:
     ![Output of git status](../../assets/git%20status%20(staged).png)
-  - This is now an <u>staged / uncommitted change</u> <span style="color:skyblue">(the change is now in the staging area)</span>
+  - This is now a <u>staged / uncommitted change</u> <span style="color:skyblue">(the change is now in the staging area)</span>
 
 <hr>
 
@@ -194,7 +194,7 @@ git log -n 2
 - Go on GitLab and find your repo.
   ![Gitlab view](../../assets/gitlab-repo-unpushed.png)
   - Look at the code.
-  - You will not find see the changes you made above, as GitHub hosts the remote Git repo, while your changes are still only on the local Git repo
+  - You will not see the changes you made above, as GitLab hosts the remote Git repo, while your changes are still only on the local Git repo
 
 <hr>
 
@@ -219,7 +219,7 @@ git log -n 2
 
     ![Output of git status](../../assets/git%20status%20(untracked).png)
 
-  - This time the files are highlighted green in you left sidebar (`U` means untracked)
+  - This time the files are highlighted green in your left sidebar (`U` means untracked)
   - Note that this time, `git status` highlights that these files are untracked by Git, meaning they have never been staged before
 
 #### b. Stage all 3 files at once
@@ -253,7 +253,7 @@ git log -n 2
 - Run `git push`
   - `git push` pushes all commits to remote at once (we have 2 unpushed commits to push).
   - You may push your commits anytime you like, one at a time, or all at once, but remember to do so to ensure your teammates can access your changes
-- Now look at your Gitlab repo. Refresh it.
+- Now look at your GitLab repo. Refresh it.
   - All your commits should now be on remote
     ![gitlab-4commit](../../assets/gitlab-4commit.png)
 
@@ -340,7 +340,7 @@ To save your commit message and quit:
 - Run `git push` to push your commit to remote
 - Run `git log --oneline` to see all your commits
 
-#### d. Go to your Gitlab repo page and click to see all the commits pushed to the main branch
+#### b. Go to your GitLab repo page and click to see all the commits pushed to the main branch
 - You should see:
   ![Commits on GitLab](../../assets/gitlab-commits.png)
 
@@ -460,7 +460,7 @@ To save your commit message and quit:
   passwords.txt
   ```
 - Similarly, `passwords.txt` is now ignored by Git
-- Run `git add .gitignore` and `git commit -m "add .gitignore"` to commit the stage and change (the .gitignore file itself is tracked by git and should be pushed to remote)
+- Run `git add .gitignore` and `git commit -m "add .gitignore"` to stage and commit the change (the .gitignore file itself is tracked by git and should be pushed to remote)
 - Run `git push`
 
 #### What if the file you want to gitignore has already been staged?
