@@ -131,7 +131,16 @@ To illustrate how your personal API keys may be misused:
 
 ## Activity 5: Fixing Problems Preventing Pulling
 
+### Situation A: When your local and remote branches have diverged
+> - This typically happens when you're working on a branch at the same time as or after a teammate working on the same branch.
+> - It could also happen if you were working on the branch on one computer, push changes, then switch to another computer and continue working without first pulling the changes. (this is essentially the same situation as the one with different teammates)
+> - This is why running `git pull` before starting on a branch is a good habit to ensure you are working on the latest state of the codebase
 
+![Error when running git pull](../../assets/git-pull-error.png)
+
+- Show the Git graph where local and remote branches have divereged from one point
+
+### Situation B: 
 <br>
 
 
