@@ -1,1 +1,3 @@
+# Python cache files and Jupyter Notebook checkpoints
+__pycache__/
 .ipynb_checkpoints/
