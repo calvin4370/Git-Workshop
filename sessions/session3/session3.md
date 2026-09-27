@@ -16,5 +16,6 @@
 > When you have uncommitted changes 
 
 
-## Activity 3: 
+## Activity 3: Fetching remote branches
+- an activity on having to run git fetch before git switch
 

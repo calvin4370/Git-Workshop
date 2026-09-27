@@ -298,13 +298,20 @@ To illustrate how your personal API keys may be misused:
 
 ## Activity 4: Fixing Problems Preventing Pushing
 
-### Situation A: 
+### Situation A: The remote branch is ahead of your local branch
 > While `git merge`, `git pull`, and Pull Requests (GitHub) / Merge Requests (GitLab) can cause merge conflicts, `git push` can never cause a merge conflict. 
 > 
 > Git will simply not allow you to push if the remote branch is ahead of your local branch (you will have to pull first).
 
-### Situation B: 
+### Situation B: No upstream branch set
 > 
+
+### Situation C: The branch is protected on GitHub / GitLab
+> 
+
+### Situation D: Unrelated histories
+> 
+
 
 
 <br>
@@ -313,6 +320,9 @@ To illustrate how your personal API keys may be misused:
 ## Activity 5: Fixing Problems Preventing Pulling
 
 ### Situation A: When your local and remote branches have diverged
+```
+fatal: Need to specify how to reconcile divergent branches.
+```
 > - This typically happens when you're working on a branch at the same time as or after a teammate working on the same branch.
 > - It could also happen if you were working on the branch on one computer, push changes, then switch to another computer and continue working without first pulling the changes. (this is essentially the same situation as the one with different teammates)
 > - This is why running `git pull` before starting on a branch is a good habit to ensure you are working on the latest state of the codebase
@@ -321,17 +331,62 @@ To illustrate how your personal API keys may be misused:
 
 - Show the Git graph where local and remote branches have diverged from one point
 
-### Situation B: 
+### Situation B: Local uncommitted changes would be overwritten
+```
+error: Your local changes to the following files would be overwritten by merge:
+        session2-lab/analysis.ipynb
+Please commit your changes or stash them before you merge.
+Aborting
+```
+
+### Situation C: An untracked local file would be overwritten
+```
+error: The following untracked working tree files would be overwritten by merge:
+        .gitignore
+Please move or remove them before you merge.
+```
+
 <br>
 
 
-## Activity 5: Fetch vs Pull
+## Activity 6: Fetch vs Pull
+>```bash
+>git fetch
+>```
+>
+>- Updates your local knowledge of what remote branches are on GitLab
+>- Essentially it only downloads remote changes, but unlike `git pull`, it does not merge the changes, so it does not touch your working directory
 
+#### a. See what is on the remote
+- Run `git fetch`
+- The output shows you what branches are currently on the remote repo
+
+<hr>
+
+#### b. Accessing remote branches with fetch
+> If you currently do not have a copy of a remote branch locally, running `git switch` to access it will not work, as your local repo has no knowledge of that remote branch.
+>
+> **Example:**
+> - Your teammate pushed a feature branch `hyperparameter-tuning` to remote
+> - They told you they did that, and you are to continue working on their branch
+> - If you simply run `git switch hyperparameter-tuning`, it will not work as your local repo has no knowledge of that remote branch. Running `git branch` will also not show that branch
+> - After running `git fetch`, this downloads all new remote changes, and gives you local branches (of those remote branches)
+> - You can now `git switch` to the new feature branch locally, or use `git branch` to see them
+
+- Run `git branch` to list the branches your local repo knows about
+- Run `git fetch`, then `git branch -a` to list **all** branches, including the remote ones
+- You can now run `git switch <branch>` to get a local copy of any of them
+
+<hr>
+
+**Why not just run `git pull`?**
+- `git pull` fetches all remote changes **and merges remote changes for your current branch**, which may be an extra step you don't want to do yet
+- `git fetch` only downloads everything from the remote for all new branches and commits, giving your local repo full knowledge of what exists on GitLab, so that you can access a local copy of the new remote branch without affecting the local branch you were previously working on
 
 <br>
 
 
-## Activity 6: Forking a Repo
+## Activity 7: Forking a Repo
 >- Forking is an action you can perform on Gitlab / Github to make a copy of another repository you have read access to. This repo copy is a new repo owned by you.
 >- From this repo copy, you can work on it as normal e.g. git pull and push to it
 >- From corresponding remote branches on your repo copy to the original repo, you can create pull requests for the original repo’s owners / developers to accept and pull into the original repo
@@ -359,4 +414,7 @@ To illustrate how your personal API keys may be misused:
 >- Note: if you try git clone the original NUSMods repo directly, you would not be able to git pull or push from this local copy as you have no write access to the repo.
 
 <hr>
+
+#### a. Try forking the Minions Visitorship repo
+
 
