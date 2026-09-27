@@ -31,11 +31,14 @@
 
 > We will demonstrate pushing and pulling with 4 participants. Each person will push changes to the repo, and pull the updated state of the repo
 
+- Open the Jupyter notebook at `minions-visitorship/session2-lab/analysis.ipynb`
+
+<br>
+
 #### a. Participant 1 pushes their changes
 - Run `git pull` to update your working directory to the latest state of the remote repo's `s2` branch
 - You should see:
   ![Output of git pull](../../assets/already.png)
-- Open the Jupyter notebook at `minions-visitorship/session2-lab/analysis.ipynb`
 - Find the cell under **Config** with the code `YEAR = 2024`
   - Edit the code into `YEAR = 2025`
   - Rerun the notebook to regenerate the plot outputs for 2025
@@ -48,17 +51,164 @@
 > 
 > Your working directories should now all reflect the updated codebase
 
+#### b. Participant 2 pushes their changes
+- Run `git pull` to update your working directory to the latest state of the remote repo's `s2` branch
+- You should see:
+  ![Output of git pull](../../assets/pull-part2.png)
+  - This time, `git pull` lists the files that changed, as it is pulling in Participant 1's commit
+- Find the first plot, **Top 10 minions by visits**, and look at the code cell under it: `plot_top_minions(visits, MINION_YELLOW, YEAR)`
+  - The 2nd argument is the colour of the bars
+  - Replace `MINION_YELLOW` with any other colour from the minion colour scheme, e.g. `EVIL_PURPLE`
+  - The full list of colours is at the top of `functions.py`
+  - Rerun the notebook
+- Stage, commit and push your changes to remote
+  - `git add .`
+  - `git commit -m "analysis: change colour of top minions plot"`
+  - `git push`
+
+> Everyone should now run `git pull` to pull the changes.
+>
+> Your working directories should now all reflect the updated codebase
+
+
+#### c. Participant 3 pushes their changes
+- Run `git pull` to update your working directory to the latest state of the remote repo's `s2` branch
+- Find the cell under **Config** with the code `YEAR = 2025`
+  - Edit the code back into `YEAR = 2024`
+  - Rerun the notebook to regenerate the plot outputs for 2024
+- Stage, commit and push your changes to remote
+  - `git add .`
+  - `git commit -m "analysis: rerun notebooks for 2024 data"`
+  - `git push`
+
+> Everyone should now run `git pull` to pull the changes.
+>
+> Your working directories should now all reflect the updated codebase
+
+
+#### d. Participant 4 pushes their changes
+- Run `git pull` to update your working directory to the latest state of the remote repo's `s2` branch
+- Pick any plot(s) in the notebook
+  - e.g. **Visits by museum** has the code cell `plot_visits_by_museum(visits, GOGGLE_GREY, YEAR)`
+  - Replace the colour argument with any other colour from the minion colour scheme, e.g. `MARGO_GREEN`
+  - Rerun the notebook
+- Stage, commit and push your changes to remote
+  - `git add .`
+  - `git commit -m "analysis: change colour of plots"`
+  - `git push`
+
+> Everyone should now run `git pull` to pull the changes.
+>
+> Your working directories should now all reflect the updated codebase
+>
+> Run `git log --oneline` to see all 4 commits in the history. Everyone's local repo now has the same commits, in the same order, as the remote `s2` branch on GitLab.
+
 
 
 <br>
 
 
 ## Activity 2: Conflict Resolution
+> Repo: `minions-visitorship`
+> Branch: `s2`
+> 
+> File: `minions-visitorship/session2-lab/activity2.py`
+
+<hr>
+
 > `git pull` is `git fetch` then `git merge`. It fetches the commits on the remote branch, then merges the equivalent **remote branch** into your **local branch**.
 >
 > A merge happens whenever two lines of development need to be combined: when you run `git pull`, when you accept a MR on GitLab, or when you run `git merge` directly. Most of the time, Git combines them automatically. As long as you and your teammate changed **different files**, or **different parts of the same file**, Git can tell which change belongs where, and it merges them into a new commit automatically.
 >
 > A **merge conflict** happens when two branches changed the **same part of the same file**, and Git cannot tell which version should be kept. Git will not guess. It stops the merge, marks the conflicting lines in the affected file(s), and leaves it to you to decide what the final version should look like (Conflict Resolution).
+
+> We will work in `minions-visitorship/session2-lab/activity2.py`, which contains 3 empty functions for us to edit.
+>
+> ⚠️ If your `git push` is rejected with `Updates were rejected because the remote contains work that you do not have locally`, run `git pull` first, resolve anything Git asks you to, then push again. We will go through why this happens in Activity 4.
+
+#### a. Merging without a conflict
+> Each participant edits a **different** function, so nobody touches the same lines.
+
+- **Everyone:** run `git pull`, then open `session2-lab/activity2.py`
+- Edit the function assigned to you any way you like.
+  - Participant 1 → `function1()`
+  - Participant 2 → `function2()`
+  - Participant 3 → `function3()`
+  - Participant 4 → `function4()`
+  - etc. (add more functions if there are more participants)
+- **Everyone:** stage and commit your change, but do **not** push yet
+  - `git add .`
+  - `git commit -m "activity2: <a short description of what you did>"`
+- Now push **one at a time**, in order of participant number
+  - Participant 1 pushes.
+  - Participant 2 runs `git pull`, then `git push`
+  - and so on, until the last participant
+- Notice that `git pull` merged the previous changes into your own commit **without asking you anything**
+  - You both changed `activity2.py`, but you changed **different parts** of it, so Git could tell which change belonged where
+- **Everyone:** run `git pull`
+  - All 3 functions should now be filled in with everyone's changes
+
+<hr>
+
+#### b. Resolving your first merge conflict
+> This time, everyone edits the **same** function, so Git cannot tell whose version to keep.
+
+- **Everyone:** run `git pull` first, so everyone starts from the same commit
+- **Everyone:** edit `function1()` in `activity2.py`, writing something different from your teammates (e.g. include your own name in a `print()` statement)
+- **Everyone:** stage and commit your change, but do **not** push yet
+  - `git add .`
+  - `git commit -m "feat(activity2): update function1"`
+- **Participant 1:** run `git push`. This works as usual
+- **Participants 2 and 3:** run `git pull`
+  - Git stops with `CONFLICT (content): Merge conflict in session2-lab/activity2.py`
+  - Run `git status`. It says `You have unmerged paths`, and lists `activity2.py` as `both modified`
+
+<hr>
+
+**Resolving the conflict**
+- Open `activity2.py`. Git has marked the conflicting lines:
+  ```python
+  <<<<<<< HEAD
+      print("this is my version")
+  =======
+      print("this is my teammate's version")
+  >>>>>>> a1b2c3d
+  ```
+  - `HEAD` is **your** version (the commit you are merging into)
+  - The part below `=======` is the **incoming** version from the remote
+- Decide what the final version should look like, then remove **all** the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
+  - In VSCode, you do not have to delete them by hand. Buttons appear above the conflict: `Accept Current Change`, `Accept Incoming Change`, `Accept Both Changes`
+  - You can also ignore the buttons and simply edit the file into whatever you want the final version to be
+- Save the file, then complete the merge:
+  ```
+  git add session2-lab/activity2.py
+  git commit
+  ```
+  - Git pre-fills the commit message for you, e.g. `Merge branch 's2' of ...`. Just save and exit nano to accept it
+- Run `git push`
+- Participant 3 does the same. Your conflict will be against the version Participant 2 just merged and pushed
+
+> **Tip:** If you get lost in the middle of a merge, run `git merge --abort`. This cancels the merge and puts your repo back exactly as it was before you pulled, so you can try again. Nothing is lost.
+
+<hr>
+
+#### c. One more round, in a different order
+> So that everyone gets to resolve a conflict, we repeat the exercise with the push order rotated.
+
+- **Everyone:** run `git pull`, then edit `function2()` in `activity2.py` with something different from your teammates
+- **Everyone:** stage and commit, but do **not** push
+- Push in this order: **Participant 2**, then **Participant 3**, then **Participant 1**
+  - Participant 2 pushes as usual
+  - Participants 3 and 1 will need to `git pull`, resolve the conflict, `git add`, `git commit`, then `git push`
+- **Everyone:** run `git pull`, then `git log --oneline --graph`
+  - The `--graph` flag draws the lines of work splitting and joining back together at each merge commit
+
+<hr>
+
+<span style="color:salmon">A merge conflict is not an error, and it is not dangerous. Git is simply asking you to decide which version to keep, because it cannot know. The merge is only complete once you remove the conflict markers, `git add` the file and commit.</span>
+
+- Conflicts are much easier to avoid than to resolve. `git pull` often, especially before starting work and before pushing, so that you are always editing the latest version of the code
+- Conflicts in Jupyter notebooks are far worse, as the markers land in the middle of the JSON, and the notebook will not open in the UI until you have removed them. This is another reason to keep reusable logic in `.py` files
 
 <br>
 
