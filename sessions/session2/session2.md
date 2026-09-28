@@ -117,7 +117,7 @@
 
 > We will demonstrate pushing and pulling with 4 participants. Each person will push changes to the repo, and pull the updated state of the repo
 
-- Open the Jupyter notebook at `minions-visitorship/session2-lab/analysis.ipynb`
+- Open the Jupyter notebook at `minions-visitorship/session2_lab/analysis.ipynb`
 
 <br>
 
@@ -130,7 +130,7 @@
     - Edit the code into `YEAR = 2025`
     - Rerun the notebook to regenerate the plot outputs for 2025
 - Stage, commit and push your changes to remote
-    - `git add session2-lab/analysis.ipynb`
+    - `git add session2_lab/analysis.ipynb`
     - `git commit -m "analysis: rerun notebooks for 2025 data"`
     - `git push`
 
@@ -150,7 +150,7 @@
     - The full list of colours is at the top of `functions.py`
     - Rerun the notebook
 - Stage, commit and push your changes to remote
-    - `git add session2-lab/analysis.ipynb`
+    - `git add session2_lab/analysis.ipynb`
     - `git commit -m "analysis: change colour of top minions plot"`
     - `git push`
 
@@ -165,7 +165,7 @@
     - Edit the code back into `YEAR = 2024`
     - Rerun the notebook to regenerate the plot outputs for 2024
 - Stage, commit and push your changes to remote
-    - `git add session2-lab/analysis.ipynb`
+    - `git add session2_lab/analysis.ipynb`
     - `git commit -m "analysis: rerun notebooks for 2024 data"`
     - `git push`
 
@@ -181,7 +181,7 @@
     - Replace the colour argument with any other colour from the minion colour scheme, e.g. `MARGO_GREEN`
     - Rerun the notebook
 - Stage, commit and push your changes to remote
-    - `git add session2-lab/analysis.ipynb`
+    - `git add session2_lab/analysis.ipynb`
     - `git commit -m "analysis: change colour of plots"`
     - `git push`
 
@@ -198,7 +198,7 @@
 > Repo: `minions-visitorship`
 > Branch: `s2`
 >
-> File: `minions-visitorship/session2-lab/activity2.py`
+> File: `minions-visitorship/session2_lab/activity2.py`
 
 <hr>
 
@@ -208,7 +208,7 @@
 >
 > A **merge conflict** happens when two branches changed the **same part of the same file**, and Git cannot tell which version should be kept. Git will not guess. It stops the merge, marks the conflicting lines in the affected file(s), and leaves it to you to decide what the final version should look like (Conflict Resolution).
 
-> We will work in `minions-visitorship/session2-lab/activity2.py`, which contains 3 empty functions for us to edit.
+> We will work in `minions-visitorship/session2_lab/activity2.py`, which contains 3 empty functions for us to edit.
 >
 > ⚠️ If your `git push` is rejected with `Updates were rejected because the remote contains work that you do not have locally`, run `git pull` first, resolve anything Git asks you to, then push again. We will go through why this happens in Activity 4.
 
@@ -216,7 +216,7 @@
 
 > Each participant edits a **different** function, so nobody touches the same lines.
 
-- **Everyone:** run `git pull`, then open `session2-lab/activity2.py`
+- **Everyone:** run `git pull`, then open `session2_lab/activity2.py`
 - Edit the function assigned to you any way you like.
     - Participant 1 → `function1()`
     - Participant 2 → `function2()`
@@ -248,7 +248,7 @@
     - `git commit -m "feat(activity2): update function1"`
 - **Participant 1:** run `git push`. This works as usual
 - **Participants 2 and 3:** run `git pull`
-    - Git stops with `CONFLICT (content): Merge conflict in session2-lab/activity2.py`
+    - Git stops with `CONFLICT (content): Merge conflict in session2_lab/activity2.py`
     - Run `git status`. It says `You have unmerged paths`, and lists `activity2.py` as `both modified`
 
 <hr>
@@ -256,6 +256,7 @@
 **Resolving the conflict**
 
 - Open `activity2.py`. Git has marked the conflicting lines:
+
     ```python
     <<<<<<< HEAD
         print("this is my version")
@@ -266,16 +267,19 @@
 
     - `HEAD` is **your** version (the commit you are merging into)
     - The part below `=======` is the **incoming** version from the remote
+
 - Decide what the final version should look like, then remove **all** the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
     - In VSCode, you do not have to delete them by hand. Buttons appear above the conflict: `Accept Current Change`, `Accept Incoming Change`, `Accept Both Changes`
     - You can also ignore the buttons and simply edit the file into whatever you want the final version to be
 - Save the file, then complete the merge:
+
     ```
-    git add session2-lab/activity2.py
+    git add session2_lab/activity2.py
     git commit
     ```
 
     - Git pre-fills the commit message for you, e.g. `Merge branch 's2' of ...`. Just save and exit nano to accept it
+
 - Run `git push`
 - Participant 3 does the same. Your conflict will be against the version Participant 2 just merged and pushed
 
@@ -299,7 +303,7 @@
 
 <span style="color:salmon">A merge conflict is not an error, and it is not dangerous. Git is simply asking you to decide which version to keep, because it cannot know. The merge is only complete once you remove the conflict markers, `git add` the file and commit.</span>
 
-- Conflicts are much easier to avoid than to resolve. `git pull` often, especially before starting work and before pushing, so that you are always editing the latest version of the code
+- Conflicts are much easier to avoid than to resolve. `git pull`/`git pull origin main` often, especially before starting any chunk of work, so that you are always editing the latest version of the code
 - Conflicts in Jupyter notebooks are far worse, as the markers land in the middle of the JSON, and the notebook will not open in the UI until you have removed them. This is another reason to keep reusable logic in `.py` files
 
 <br>
@@ -332,9 +336,9 @@
 
 </td></tr></table>
 
-#### a. Navigate into the `minions-visitorship/session2_activity` folder
+#### a. Navigate into the `minions-visitorship/session2_lab` folder
 
-- While in `/home/jovyan/minions-visitorship`, run `cd session2_activity`
+- While in `/home/jovyan/minions-visitorship`, run `cd session2_lab`
 
 #### b. Try running the program which calls an LLM API
 
@@ -437,7 +441,7 @@ fatal: Need to specify how to reconcile divergent branches.
 
 ```
 error: Your local changes to the following files would be overwritten by merge:
-        session2-lab/analysis.ipynb
+        session2_lab/analysis.ipynb
 Please commit your changes or stash them before you merge.
 Aborting
 ```
