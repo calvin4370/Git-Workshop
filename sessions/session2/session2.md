@@ -108,6 +108,14 @@
 - Run `git switch s2` to switch to the `s2` branch of the repo
 - This is to prevent you from pushing changes to modify my clean `main` branch (I have also configured the GitLab repo to not accept direct pushes to main).
 
+#### c. Install the workshop dependencies
+
+- From the root of the `minions-visitorship` repo, run:
+
+  ```bash
+  pip install -r requirements.txt
+  ```
+
 <br>
 
 ## Activity 1: Pushing and Pulling Changes
@@ -308,7 +316,7 @@
 
 <br>
 
-## Activity 3: Working with .env files
+## Activity 3: Working with API keys
 
 > Other than rebuildable outputs, large binaries, and clutter which should not be committed for various reasons, there are some environmental variables / files required by your code but still should never be committed to Git.
 >
@@ -356,7 +364,7 @@
 #### d. Copy and paste your personal API key into `api_testing.py`
 
 - You should replace line {edit-here} with your API key
-- e.g. `API_KEY = JJ11M26N1H2B3LV4EVR`
+- e.g. `API_KEY = git-ws-123abc456def...`
 
 #### e. Now try running the program again
 
@@ -397,9 +405,76 @@ To illustrate how your personal API keys may be misused:
 - Once everyone has done the above, run `git pull` to pull everyone's changes to your local repo.
 - In the left pane, right-click `api_dashboard.html` and click `Show Preview`
 
+> ### Learning Points: Why API Keys Must Be Secured
+>
+> - As you can see, it is easy for administrators to see
+>     - which API key made each request,
+>     - which participant that key belongs to,
+>     - what prompts were submitted, and
+>     - how many calls each participant made, including malicious calls.
+> - A leaked key can allow someone else to use your API quota, incur costs, access protected services, or create activity that is attributed to you.
+> - API keys must never be committed to a Git repository. Removing a key from the latest version does not remove it from the repository's commit history.
+> - If a key is exposed, revoke or rotate it immediately and issue a replacement.
+> - Store secrets outside source code, such as in environment variables or a secrets manager. We will practise using a `.env` file in the next activity.
+
 <br>
 
-## Activity 4: Fixing Problems Preventing Pushing
+## Activity 4: Using `.env` files
+
+> **Facilitator: Reset the API demonstration**
+>
+> - From the root of the `minions-visitorship` repo, run:
+>
+>     ```bash
+>     git pull
+>     git rm -r logs
+>     git commit -m "chore: reset API call logs"
+>     git push
+>     ```
+>
+> - Have everyone run `git pull`.
+
+#### a. Create an `.env` file to store your API key
+
+- At the root of the `minions-visitorship` repo, create an `.env` file
+
+- Add your personal key:
+
+    ```python
+    API_KEY="your_personal_api_key"
+    ```
+
+#### b. Add `.env` to `.gitignore`
+
+- Add the following line to `.gitignore`:
+
+    ```text
+    .env
+    ```
+
+- Run `git status` and confirm that `.env` does not appear.
+
+#### c. Update `api_testing.py`
+
+- Replace the hardcoded key with:
+
+    ```python
+    # EDIT HERE ===================================================
+    import os
+    from dotenv import load_dotenv
+
+    load_dotenv("../.env")
+    API_KEY = os.environ["API_KEY"]
+    # =============================================================
+    ```
+
+- Run the program again with any of the permitted prompts.
+- Run `git restore session2_lab/api_testing.py .gitignore`.
+- Then stage all changes, commit, and push
+
+<br>
+
+## Activity 5: Fixing Problems Preventing Pushing
 
 ### Situation A: The remote branch is ahead of your local branch
 
@@ -421,7 +496,7 @@ To illustrate how your personal API keys may be misused:
 
 <br>
 
-## Activity 5: Fixing Problems Preventing Pulling
+## Activity 6: Fixing Problems Preventing Pulling
 
 ### Situation A: When your local and remote branches have diverged
 
@@ -456,7 +531,7 @@ Please move or remove them before you merge.
 
 <br>
 
-## Activity 6: Fetch vs Pull
+## Activity 7: Fetch vs Pull
 
 > ```bash
 > git fetch
@@ -497,7 +572,7 @@ Please move or remove them before you merge.
 
 <br>
 
-## Activity 7: Forking a Repo
+## Activity 8: Forking a Repo
 
 > - Forking is an action you can perform on Gitlab / Github to make a copy of another repository you have read access to. This repo copy is a new repo owned by you.
 > - From this repo copy, you can work on it as normal e.g. git pull and push to it
