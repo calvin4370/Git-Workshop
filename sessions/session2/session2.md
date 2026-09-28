@@ -126,6 +126,7 @@
 > We will demonstrate pushing and pulling with 4 participants. Each person will push changes to the repo, and pull the updated state of the repo
 
 - Open the Jupyter notebook at `minions-visitorship/session2_lab/analysis.ipynb`
+- Only the participant whose turn it is should edit or run the notebook. If anyone else runs it, their next `git pull` will fail (see Activity 6, Situation B)
 
 <br>
 
@@ -155,7 +156,7 @@
 - Find the first plot, **Top 10 minions by visits**, and look at the code cell under it: `plot_top_minions(visits, MINION_YELLOW, YEAR)`
     - The 2nd argument is the colour of the bars
     - Replace `MINION_YELLOW` with any other colour from the minion colour scheme, e.g. `EVIL_PURPLE`
-    - The full list of colours is at the top of `functions.py`
+    - The full list of colours is at the top of `src/minions.py`
     - Rerun the notebook
 - Stage, commit and push your changes to remote
     - `git add session2_lab/analysis.ipynb`
@@ -201,118 +202,78 @@
 
 <br>
 
-## Activity 2: Conflict Resolution
+## Activity 2: Merge Conflicts
 
 > Repo: `minions-visitorship`
 > Branch: `s2`
 >
 > File: `minions-visitorship/session2_lab/activity2.py`
 
-<hr>
-
-> `git pull` is `git fetch` then `git merge`. It fetches the commits on the remote branch, then merges the equivalent **remote branch** into your **local branch**.
+> `git pull` is `git fetch` then `git merge`. Most of the time, Git merges changes automatically, as long as you and your teammates changed **different parts** of the code.
 >
-> A merge happens whenever two lines of development need to be combined: when you run `git pull`, when you accept a MR on GitLab, or when you run `git merge` directly. Most of the time, Git combines them automatically. As long as you and your teammate changed **different files**, or **different parts of the same file**, Git can tell which change belongs where, and it merges them into a new commit automatically.
->
-> A **merge conflict** happens when two branches changed the **same part of the same file**, and Git cannot tell which version should be kept. Git will not guess. It stops the merge, marks the conflicting lines in the affected file(s), and leaves it to you to decide what the final version should look like (Conflict Resolution).
+> A **merge conflict** happens when two commits change the **same lines of the same file**. Git will not guess which version to keep. It stops the merge, marks the conflicting lines, and leaves you to decide (conflict resolution).
 
-> We will work in `minions-visitorship/session2_lab/activity2.py`, which contains 3 empty functions for us to edit.
->
-> ⚠️ If your `git push` is rejected with `Updates were rejected because the remote contains work that you do not have locally`, run `git pull` first, resolve anything Git asks you to, then push again. We will go through why this happens in Activity 4.
+#### a. Everyone edits the same lines
 
-#### a. Merging without a conflict
+- Run `git pull`, so everyone starts from the same commit
+- Open `session2_lab/activity2.py`, and replace `return` in `function1()` with a line of your own, e.g. `print("<your name> was here")`
+- Stage and commit, but do **not** push yet
+    - `git add session2_lab/activity2.py`
+    - `git commit -m "activity2: update function1"`
 
-> Each participant edits a **different** function, so nobody touches the same lines.
+#### b. Participant 1 pushes
 
-- **Everyone:** run `git pull`, then open `session2_lab/activity2.py`
-- Edit the function assigned to you any way you like.
-    - Participant 1 → `function1()`
-    - Participant 2 → `function2()`
-    - Participant 3 → `function3()`
-    - Participant 4 → `function4()`
-    - etc. (add more functions if there are more participants)
-- **Everyone:** stage and commit your change, but do **not** push yet
-    - `git add .`
-    - `git commit -m "activity2: <a short description of what you did>"`
-- Now push **one at a time**, in order of participant number
-    - Participant 1 pushes.
-    - Participant 2 runs `git pull`, then `git push`
-    - and so on, until the last participant
-- Notice that `git pull` merged the previous changes into your own commit **without asking you anything**
-    - You both changed `activity2.py`, but you changed **different parts** of it, so Git could tell which change belonged where
-- **Everyone:** run `git pull`
-    - All 3 functions should now be filled in with everyone's changes
-
-<hr>
-
-#### b. Resolving your first merge conflict
-
-> This time, everyone edits the **same** function, so Git cannot tell whose version to keep.
-
-- **Everyone:** run `git pull` first, so everyone starts from the same commit
-- **Everyone:** edit `function1()` in `activity2.py`, writing something different from your teammates (e.g. include your own name in a `print()` statement)
-- **Everyone:** stage and commit your change, but do **not** push yet
-    - `git add .`
-    - `git commit -m "feat(activity2): update function1"`
 - **Participant 1:** run `git push`. This works as usual
-- **Participants 2 and 3:** run `git pull`
+
+#### c. Everyone else pulls and resolves the conflict
+
+Go **one at a time**, in order (Participant 2, then 3, then 4). Wait for the previous participant to push before you start.
+
+- Run `git pull --no-rebase`
     - Git stops with `CONFLICT (content): Merge conflict in session2_lab/activity2.py`
-    - Run `git status`. It says `You have unmerged paths`, and lists `activity2.py` as `both modified`
 
-<hr>
+    > **Why `--no-rebase`?** You and the remote both have new commits that the other does not have (your branches have *diverged*). Git needs you to choose how to combine them, so a plain `git pull` stops with `fatal: Need to specify how to reconcile divergent branches`.
+    >
+    > - `--no-rebase` (merge): combines your commit and the remote's with a new **merge commit**. The history shows where the work split and joined back together
+    > - `--rebase`: sets your commit aside, applies the remote's commits, then replays your commit on top. The history stays a straight line, with no merge commit
+    >
+    > We will go through this choice in Activity 6, Situation A.
 
-**Resolving the conflict**
-
+- Run `git status`. It says `You have unmerged paths`, and lists `activity2.py` as `both modified`
 - Open `activity2.py`. Git has marked the conflicting lines:
 
     ```python
+    def function1():
     <<<<<<< HEAD
-        print("this is my version")
+        print("Participant 2 was here")
     =======
-        print("this is my teammate's version")
-    >>>>>>> a1b2c3d
+        print("Participant 1 was here")
+    >>>>>>> 3f9c2e1a...
     ```
 
-    - `HEAD` is **your** version (the commit you are merging into)
-    - The part below `=======` is the **incoming** version from the remote
+    - Between `<<<<<<< HEAD` and `=======` is **your** version
+    - Between `=======` and `>>>>>>>` is the **incoming** version from the remote (followed by its commit ID)
 
-- Decide what the final version should look like, then remove **all** the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`)
-    - In VSCode, you do not have to delete them by hand. Buttons appear above the conflict: `Accept Current Change`, `Accept Incoming Change`, `Accept Both Changes`
-    - You can also ignore the buttons and simply edit the file into whatever you want the final version to be
+- Edit the file into the final version you want, and delete **all** the markers (`<<<<<<<`, `=======`, `>>>>>>>`)
+    - In VSCode, you can instead click `Accept Current Change`, `Accept Incoming Change` or `Accept Both Changes` above the conflict
 - Save the file, then complete the merge:
-
-    ```
-    git add session2_lab/activity2.py
-    git commit
-    ```
-
-    - Git pre-fills the commit message for you, e.g. `Merge branch 's2' of ...`. Just save and exit nano to accept it
-
+    - `git add session2_lab/activity2.py`
+    - `git commit`. nano opens with a pre-filled message, `Merge branch 's2' of ...`. Save and exit to accept it
 - Run `git push`
-- Participant 3 does the same. Your conflict will be against the version Participant 2 just merged and pushed
 
-> **Tip:** If you get lost in the middle of a merge, run `git merge --abort`. This cancels the merge and puts your repo back exactly as it was before you pulled, so you can try again. Nothing is lost.
+> **Tip:** If you get lost in the middle of a merge, run `git merge --abort`. This puts your repo back exactly as it was before you pulled, so you can try again.
 
-<hr>
+#### d. See the result
 
-#### c. One more round, in a different order
-
-> So that everyone gets to resolve a conflict, we repeat the exercise with the push order rotated.
-
-- **Everyone:** run `git pull`, then edit `function2()` in `activity2.py` with something different from your teammates
-- **Everyone:** stage and commit, but do **not** push
-- Push in this order: **Participant 2**, then **Participant 3**, then **Participant 1**
-    - Participant 2 pushes as usual
-    - Participants 3 and 1 will need to `git pull`, resolve the conflict, `git add`, `git commit`, then `git push`
 - **Everyone:** run `git pull`, then `git log --oneline --graph`
-    - The `--graph` flag draws the lines of work splitting and joining back together at each merge commit
+    - The lines show where work split and was joined back together at each merge commit
 
 <hr>
 
-<span style="color:salmon">A merge conflict is not an error, and it is not dangerous. Git is simply asking you to decide which version to keep, because it cannot know. The merge is only complete once you remove the conflict markers, `git add` the file and commit.</span>
+<span style="color:salmon">A merge conflict is not an error, and it is not dangerous. Git is simply asking you to decide which version to keep. The merge is only complete once you remove the conflict markers, `git add` the file and commit.</span>
 
-- Conflicts are much easier to avoid than to resolve. `git pull`/`git pull origin main` often, especially before starting any chunk of work, so that you are always editing the latest version of the code
-- Conflicts in Jupyter notebooks are far worse, as the markers land in the middle of the JSON, and the notebook will not open in the UI until you have removed them. This is another reason to keep reusable logic in `.py` files
+- Conflicts are easier to avoid than to resolve. `git pull` often, especially before starting any chunk of work
+- Conflicts in Jupyter notebooks are far worse, as the markers land in the middle of the JSON, and the notebook will not open until you remove them. This is another reason to keep reusable logic in `.py` files
 
 <br>
 
@@ -350,10 +311,10 @@
 
 #### b. Try running the program which calls an LLM API
 
-> Note: This is a simulated LLM API, with hardcoded prompts and responses. But I have implementing tracking of users and their prompts, and a dashboard that shows all LLM call logs.
+> Note: This is a simulated LLM API, with hardcoded prompts and responses. But I have implemented tracking of users and their prompts, and a dashboard that shows all LLM call logs.
 
 - Run `python api_testing.py "<prompt>"` where \<prompt\> is anything you want to ask an LLM
-    - e.g. `python api_testing "what is the weather today"`
+    - e.g. `python api_testing.py "what is the weather today"`
 
 - You will see that, as most APIs do, this LLM API requires an API key
 
@@ -363,8 +324,8 @@
 
 #### d. Copy and paste your personal API key into `api_testing.py`
 
-- You should replace line {edit-here} with your API key
-- e.g. `API_KEY = git-ws-123abc456def...`
+- Paste your API key between the quotes of `API_KEY = ""` under `# EDIT HERE` (line 10)
+- e.g. `API_KEY = "git_ws_123abc456def..."`
 
 #### e. Now try running the program again
 
@@ -398,12 +359,13 @@ To illustrate how your personal API keys may be misused:
 >
 > To consolidate all the logs together into the remote repo, you must `git push` them. Everyone can then `git pull` to access everyone's logs.
 
-- First, run `git restore session2_activity/api_testing.py` to remove your changes to just that one file, to prevent merge conflicts later
-- Now run `git add .` to stage all the API call logs
+- First, run `git restore api_testing.py` to remove your changes to just that one file, to prevent merge conflicts later
+- Now run `git add .` to stage all the API call logs in `session2_lab/logs`
 - Run `git commit -m "Session2 Activity3 API call logs"` to commit the changes
-- Run `git push -u origin s2` to push the changes to the remote `s2` branch.
+- Run `git push` to push the changes to the remote `s2` branch
+    - If your push is rejected because someone pushed before you, run `git pull --no-rebase`, then `git push` again
 - Once everyone has done the above, run `git pull` to pull everyone's changes to your local repo.
-- In the left pane, right-click `api_dashboard.html` and click `Show Preview`
+- In the left pane, right-click `session2_lab/api_dashboard.html` and click `Show Preview`
 
 > ### Learning Points: Why API Keys Must Be Secured
 >
@@ -427,12 +389,25 @@ To illustrate how your personal API keys may be misused:
 >
 >     ```bash
 >     git pull
->     git rm -r logs
+>     git rm -r session2_lab/logs
 >     git commit -m "chore: reset API call logs"
+>     ```
+>
+> - Add the following line to `.gitignore` at the root of the repo, so that nobody can accidentally commit their `.env` file:
+>
+>     ```text
+>     .env
+>     ```
+>
+> - Commit and push the change:
+>
+>     ```bash
+>     git add .gitignore
+>     git commit -m "chore: ignore .env files"
 >     git push
 >     ```
 >
-> - Have everyone run `git pull`.
+> - Have everyone run `git pull`, and check that `.env` now appears in their `.gitignore`.
 
 #### a. Create an `.env` file to store your API key
 
@@ -444,9 +419,9 @@ To illustrate how your personal API keys may be misused:
     API_KEY="your_personal_api_key"
     ```
 
-#### b. Add `.env` to `.gitignore`
+#### b. Check that `.env` is ignored
 
-- Add the following line to `.gitignore`:
+- Open `.gitignore` at the root of the repo. The facilitator has already added this line and pushed it, which you pulled:
 
     ```text
     .env
@@ -463,14 +438,19 @@ To illustrate how your personal API keys may be misused:
     import os
     from dotenv import load_dotenv
 
-    load_dotenv("../.env")
+    load_dotenv()
     API_KEY = os.environ["API_KEY"]
     # =============================================================
     ```
 
 - Run the program again with any of the permitted prompts.
-- Run `git restore session2_lab/api_testing.py .gitignore`.
-- Then stage all changes, commit, and push
+- Run `git restore api_testing.py`.
+- Run `git status`, and confirm that only your logs in `session2_lab/logs` are listed, and `.env` is not
+- Stage, commit and push
+    - `git add .`
+    - `git commit -m "Session2 Activity4 API call logs"`
+    - `git push` (if rejected, run `git pull --no-rebase`, then `git push` again)
+- Run `cd ..` to return to the root of the `minions-visitorship` repo. All commands from here on are run from the root
 
 <br>
 
@@ -743,14 +723,7 @@ Please move or remove them before you merge.
 > - Updates your local knowledge of what remote branches are on GitLab
 > - Essentially it only downloads remote changes, but unlike `git pull`, it does not merge the changes, so it does not touch your working directory
 
-#### a. See what is on the remote
-
-- Run `git fetch`
-- The output shows you what branches are currently on the remote repo
-
-<hr>
-
-#### b. Accessing remote branches with fetch
+#### a. Accessing remote branches with fetch
 
 > If you currently do not have a copy of a remote branch locally, running `git switch` to access it will not work, as your local repo has no knowledge of that remote branch.
 >
@@ -758,13 +731,27 @@ Please move or remove them before you merge.
 >
 > - Your teammate pushed a feature branch `hyperparameter-tuning` to remote
 > - They told you they did that, and you are to continue working on their branch
-> - If you simply run `git switch hyperparameter-tuning`, it will not work as your local repo has no knowledge of that remote branch. Running `git branch` will also not show that branch
-> - After running `git fetch`, this downloads all new remote changes, and gives you local branches (of those remote branches)
-> - You can now `git switch` to the new feature branch locally, or use `git branch` to see them
+> - If you simply run `git switch hyperparameter-tuning`, it will not work as your local repo has no knowledge of that remote branch. Running `git branch -a` will also not show that branch
+> - After running `git fetch`, your local repo knows about the new remote branch, `origin/hyperparameter-tuning`
+> - You can now `git switch hyperparameter-tuning` to get a local copy of it
 
-- Run `git branch` to list the branches your local repo knows about
-- Run `git fetch`, then `git branch -a` to list **all** branches, including the remote ones
-- You can now run `git switch <branch>` to get a local copy of any of them
+> **Facilitator:** once everyone has finished Activity 6, push a new branch from the root of the repo:
+>
+> ```bash
+> git switch -c hyperparameter-tuning
+> git push -u origin hyperparameter-tuning
+> git switch s2
+> ```
+
+#### Everyone:
+
+- Run `git branch -a` to list all branches your local repo knows about, including remote ones. `hyperparameter-tuning` is not listed
+- Run `git switch hyperparameter-tuning`. It fails with `fatal: invalid reference: hyperparameter-tuning`
+- Run `git fetch`. The output lists what is new on the remote since you last fetched or pulled, including `* [new branch]      hyperparameter-tuning -> origin/hyperparameter-tuning`
+    - If nothing is new on the remote, `git fetch` prints nothing
+- Run `git branch -a` again. `remotes/origin/hyperparameter-tuning` is now listed
+- Run `git switch hyperparameter-tuning`. This now works, and creates a local copy of the branch
+- Run `git switch s2` to go back
 
 <hr>
 
