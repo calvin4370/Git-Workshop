@@ -478,39 +478,178 @@ To illustrate how your personal API keys may be misused:
 
 ### Situation A: The remote branch is ahead of your local branch
 
+```
+ ! [rejected]        s2 -> s2 (fetch first)
+error: failed to push some refs to '<remote_url>'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+```
+
 > While `git merge`, `git pull`, and Pull Requests (GitHub) / Merge Requests (GitLab) can cause merge conflicts, `git push` can never cause a merge conflict.
 >
-> Git will simply not allow you to push if the remote branch is ahead of your local branch (you will have to pull first).
+> Git will simply not allow you to push if the remote branch is ahead of your local branch (you will have to pull first). Otherwise, your push would overwrite your teammates' commits that you do not have.
+
+**Reproduce the error**
+
+- **Everyone:** run `git pull`, so everyone starts from the same commit
+- **Everyone:** create a new file `session2_lab/push_p<N>.txt`, where `<N>` is your participant number, and type anything in it
+- **Everyone:** stage and commit it
+    - `git add session2_lab/push_p<N>.txt`
+    - `git commit -m "chore: add push_p<N>.txt"`
+- **Participant 1:** run `git push`. This works as usual
+- **Participants 2, 3 and 4:** run `git push`. Git rejects it with the error above
+
+**Fix: pull first, then push**
+
+Go one at a time, in order (Participant 2, then 3, then 4):
+
+- `git pull --no-rebase`
+    - nano opens with a pre-filled merge message. Save and exit to accept it
+    - You and the remote both have new commits, so Git needs to know how to combine them. `--no-rebase` means merge. We will go through this choice in Activity 6, Situation A
+- `git push`
+    - If it is rejected again, someone pushed in between. Just pull and push again
+
+<hr>
 
 ### Situation B: No upstream branch set
 
+```
+fatal: The current branch s2-p1 has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin s2-p1
+```
+
+> Your local branch is not linked to any branch on the remote yet, so a plain `git push` does not know where to push to.
 >
+> ```
+>  Local repo                        Remote repo (GitLab)
+>  ──────────                        ────────────────────
+>  s2        ◄──── upstream ────►    origin/s2
+>  s2-p1     ◄──── (none) ─────      (does not exist yet)
+> ```
+>
+> - This happens on the **first** push of a branch you created locally (Session 3), or of a brand new local repo you linked with `git remote add` (Session 0)
+> - Branches you get from the remote, like `s2` via `git switch s2`, are already linked. This is why a plain `git push` has worked on `s2` all session
+
+**Fix: push once with `-u`**
+
+```
+git push -u origin <branch>
+```
+
+- `-u` (short for `--set-upstream`) links your local branch to the remote branch, creating it on the remote if it does not exist yet
+- You only need to do this once per branch. After that, a plain `git push` / `git pull` works
+
+<hr>
 
 ### Situation C: The branch is protected on GitHub / GitLab
 
+GitLab rejects the push with an error similar to:
+
+```
+remote: GitLab: You are not allowed to push code to protected branches on this project.
+ ! [remote rejected] main -> main (pre-receive hook declined)
+error: failed to push some refs to '<remote_url>'
+```
+
+> A **protected branch** only accepts changes in approved ways, usually through a merge request. Repo owners protect `main` so that nobody can push unreviewed changes straight into production.
 >
+> - The `main` branch of `minions-visitorship` is protected, which is why we work on `s2` in this session
+
+**Fix: do not push to the protected branch**
+
+- Push your commits to a separate branch instead, then open a merge request to merge it into `main` (Session 5)
+- If you already committed on local `main` by mistake, move those commits to the correct branch first (Session 4)
+
+<hr>
 
 ### Situation D: Unrelated histories
 
+```
+fatal: refusing to merge unrelated histories
+```
+
+> Occurs when Git is asked to combine two branches / repositories that **do not share a common ancestor commit**. Git will not allow this, as it cannot treat one commit history as a continuation of the other.
 >
+> **Example**
+>
+> - You have a project folder which you just initialised as a git repo with `git init`, and committed your files
+> - You then create a new GitLab repo, but mistakenly tick `Add README`. This creates a separate first commit on GitLab
+> - You link the two with `git remote add origin <HTTPS_address>`
+> - When you try to push, Git rejects it with the same error as Situation A, because of the README commit on GitLab
+> - When you try to pull the README, Git refuses with `fatal: refusing to merge unrelated histories`
+
+**Fix: allow the unrelated histories to be merged, then push**
+
+```
+git pull origin main --no-rebase --allow-unrelated-histories
+git push -u origin main
+```
+
+- `origin main`: your new local branch has no upstream yet (Situation B), so you need to say which remote branch to pull from
+- `--no-rebase`: combine them with a merge (Activity 6, Situation A)
+- `--allow-unrelated-histories`: tells Git to merge even though the two histories share no common commit
+
+To avoid this entirely, **untick `Add README`** when creating a GitLab repo for an existing local project, as we did in Session 0.
 
 <br>
 
 ## Activity 6: Fixing Problems Preventing Pulling
 
-### Situation A: When your local and remote branches have diverged
+### Situation A: Your local and remote branches have diverged
 
 ```
 fatal: Need to specify how to reconcile divergent branches.
 ```
 
-> - This typically happens when you're working on a branch at the same time as or after a teammate working on the same branch.
-> - It could also happen if you were working on the branch on one computer, push changes, then switch to another computer and continue working without first pulling the changes. (this is essentially the same situation as the one with different teammates)
-> - This is why running `git pull` before starting on a branch is a good habit to ensure you are working on the latest state of the codebase
+> Your local branch has commits the remote does not have, **and** the remote has commits you do not have. Both branches have moved on from the same commit in different directions, so Git needs you to choose how to combine them.
+>
+> - This typically happens when you and a teammate work on the same branch at the same time
+> - It can also happen if you push from one computer, then continue working on another computer without pulling first
+> - This is why you should run `git pull` before starting work on a branch
+>
+> This is a similar situation to **Activity 5, Situation A**. In both, your branch and the remote branch have each gained commits the other does not have. There, `git push` was rejected because it would overwrite the remote's commits. Here, `git pull` stops because Git needs you to choose how to combine the two.
+
+**Reproduce the error**
+
+- **Everyone:** run `git pull`, so everyone starts from the same commit
+- **Everyone:** create a new file `session2_lab/diverge_p<N>.txt`, where `<N>` is your participant number, and type anything in it
+- **Everyone:** stage and commit it, but do **not** push
+    - `git add session2_lab/diverge_p<N>.txt`
+    - `git commit -m "chore: add diverge_p<N>.txt"`
+- **Participant 1:** run `git push`. This works as usual
+- **Participants 2, 3 and 4:** run `git pull`. Git stops with:
 
 ![Error when running git pull](../../assets/git-pull-error.png)
 
-- Show the Git graph where local and remote branches have diverged from one point
+**Fix: choose how to combine the branches**
+
+> The two options below apply to this one pull only:
+>
+> - `git pull --no-rebase` (**merge**): combines both branches with a new **merge commit**. The history shows where the work split and joined back together
+> - `git pull --rebase` (**rebase**): sets your local commits aside, applies the remote's commits, then replays your commits on top. The history stays a **straight line**, with no merge commit
+>
+> Only rebase commits you have **not** pushed yet, as rebasing rewrites them.
+
+Go one at a time, in order:
+
+- **Participant 2 (merge):**
+    - `git pull --no-rebase`
+    - nano opens with a pre-filled merge message. Save and exit to accept it
+    - `git push`
+- **Participant 3 (rebase):**
+    - `git pull --rebase`
+    - You should see `Successfully rebased and updated refs/heads/s2.`
+    - `git push`
+- **Participant 4:** pick either option, then `git push`
+- **Everyone:** run `git pull`, then `git log --oneline --graph`
+    - Participant 2's merge shows as lines splitting and joining back at a merge commit
+    - Participant 3's rebased commit comes directly after the commit before it, with no merge commit of its own
+
+<hr>
 
 ### Situation B: Local uncommitted changes would be overwritten
 
@@ -521,6 +660,46 @@ Please commit your changes or stash them before you merge.
 Aborting
 ```
 
+> You ran `git pull` while you had **uncommitted** changes to a file that the incoming commits also change. <span style="color:salmon">Note this applies by files and not lines! So even when the edits are on different lines, Git will not overwrite your uncommitted changed file, so it stops the pull.</span>
+>
+> - A common cause is simply running a Jupyter notebook, which changes its outputs and metadata even if you did not edit any code
+> - If your uncommitted changes are only in **other** files, the pull works as normal and keeps your changes
+
+**Reproduce the error**
+
+- **Everyone:** run `git pull`, so everyone starts from the same commit
+- **Participant 1:** edit `function1()` in `session2_lab/activity2.py`, then stage, commit and push
+    - `git add session2_lab/activity2.py`
+    - `git commit -m "feat(activity2): update function1"`
+    - `git push`
+- **Participants 2, 3 and 4:** edit a **different** function in `session2_lab/activity2.py` and save. Do **not** stage or commit
+    - Participant 2 → `function2()`
+    - Participant 3 → `function3()`
+    - Participant 4 → `function4()`
+- **Participants 2, 3 and 4:** run `git pull`. Git stops with the error above, listing `session2_lab/activity2.py`
+
+**Fix: 3 ways**
+
+Each participant tries a different fix. Go one at a time, in order:
+
+- **Participant 2: Commit your local changes**
+    - `git add session2_lab/activity2.py`
+    - `git commit -m "feat(activity2): update function2"`
+    - `git pull --no-rebase` (or `--rebase`). Your branches have now diverged, as in Situation A
+        - If you and a teammate changed the same lines, resolve the merge conflict as in Activity 2
+    - `git push`
+- **Participant 3: Discard your local uncommitted changes**
+    - `git restore session2_lab/activity2.py` (or `git restore .` to discard changes in all files)
+        - ⚠️ Your edit to `function3()` is gone for good. It cannot be recovered
+    - `git pull`
+- **Participant 4: Stash your local uncommitted changes**
+    - `git stash` sets your uncommitted changes aside, so your files match your last commit
+    - `git pull`
+    - `git stash pop` puts your changes back, on top of the latest code
+    - Your edit to `function4()` is back, still uncommitted. We will cover stashing in more detail in Session 4
+
+<hr>
+
 ### Situation C: An untracked local file would be overwritten
 
 ```
@@ -528,6 +707,30 @@ error: The following untracked working tree files would be overwritten by merge:
         .gitignore
 Please move or remove them before you merge.
 ```
+
+> A teammate pushed a **new** file, and you have an **untracked** file with the same name in the same folder. Git will not overwrite a file it is not tracking, even if both files have identical contents.
+>
+> - e.g. You and a teammate each create a `.gitignore`, and they push theirs first
+
+**Reproduce the error**
+
+- **Everyone:** run `git pull`, so everyone starts from the same commit
+- **Participant 1:** create `session2_lab/meeting_notes.md`, type anything in it, then stage, commit and push
+    - `git add session2_lab/meeting_notes.md`
+    - `git commit -m "docs: add meeting notes"`
+    - `git push`
+- **Participants 2, 3 and 4:** create a file with the **exact same name**, `session2_lab/meeting_notes.md`, type anything in it and save. Do **not** stage or commit
+- **Participants 2, 3 and 4:** run `git pull`. Git stops with the error above, listing `session2_lab/meeting_notes.md`
+
+**Fix: move or remove your file, as the error suggests**
+
+- **Participants 2 and 3: Rename your file** if you want to keep it
+    - In the left pane, right-click your `meeting_notes.md` → Rename, e.g. to `meeting_notes_p2.md`
+    - `git pull`. Participant 1's `meeting_notes.md` now appears next to your renamed file
+- **Participant 4: Delete your file** if you do not need it
+    - In the left pane, right-click your `meeting_notes.md` → Delete
+        - ⚠️ Untracked files are not saved in Git, so deleting one is permanent
+    - `git pull`
 
 <br>
 
