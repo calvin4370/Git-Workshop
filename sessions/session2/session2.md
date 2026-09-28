@@ -1,8 +1,91 @@
 # Session 2: Remote Workflows and Conflict Resolution
+
+### Reference Table
+
+<table>
+  <colgroup>
+    <col style="width: 40%">
+    <col style="width: 60%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>git clone &lt;HTTPS_address&gt;</code></td>
+      <td>Copy a remote repo onto your machine as a new folder</td>
+    </tr>
+    <tr>
+      <td><code>git status</code></td>
+      <td>See what has changed, what is staged, and which files have merge conflicts</td>
+    </tr>
+    <tr>
+      <td><code>git add &lt;file&gt;</code><br><code>git add .</code></td>
+      <td>Stage a specific file<br>Stage everything in the present working directory</td>
+    </tr>
+    <tr>
+      <td><code>git commit -m "commit message"</code></td>
+      <td>Commit staged changes with a single-line message</td>
+    </tr>
+    <tr>
+      <td><code>git commit</code></td>
+      <td>Open nano to write a commit message. After resolving a conflict, the merge message is pre-filled</td>
+    </tr>
+    <tr>
+      <td><code>git push</code></td>
+      <td>Upload your local commits to the remote branch</td>
+    </tr>
+    <tr>
+      <td><code>git log --oneline</code></td>
+      <td>View commit history, one line per commit</td>
+    </tr>
+    <tr>
+      <td><code>git pull</code></td>
+      <td>Download remote changes and merge them into your current branch (<code>git fetch</code> + <code>git merge</code>)</td>
+    </tr>
+    <tr>
+      <td><code>git push -u origin &lt;branch&gt;</code></td>
+      <td>First push of a new branch. Links it to the remote branch, so later pushes and pulls only need <code>git push</code> / <code>git pull</code></td>
+    </tr>
+    <tr>
+      <td><code>git merge --abort</code></td>
+      <td>Cancel a merge in progress and return to how things were before you pulled</td>
+    </tr>
+    <tr>
+      <td><code>git log --oneline --graph</code></td>
+      <td>Commit history, with lines showing where work split and merged</td>
+    </tr>
+    <tr>
+      <td><code>git fetch</code></td>
+      <td>Download remote branches and commits <strong>without</strong> merging them or touching your working directory</td>
+    </tr>
+    <tr>
+      <td><code>git branch</code><br><code>git branch -a</code></td>
+      <td>List local branches (current branch highlighted)<br>List all branches, including remote ones</td>
+    </tr>
+    <tr>
+      <td><code>git switch &lt;branch&gt;</code></td>
+      <td>Switch to another branch (covered in Session 3)</td>
+    </tr>
+    <tr>
+      <td><code>git restore &lt;file&gt;</code></td>
+      <td>Discard uncommitted changes to a file. <strong>These changes cannot be recovered</strong> (covered in Session 4)</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
+## Overview
+
 > In Session 1, you cloned a brand new, empty repo you created yourself on GitLab
 >
 > This time, we will clone a repo that already has files and a commit history, just like joining an ongoing project.
 
+<br>
 
 ## Setup
 >`Minions Visitorship` is a project simulating an analysis of museum visitorship where all the visitors are minions from the Despicable Me franchise. It is similar to the Overseas Visitorship Survey analysis.
