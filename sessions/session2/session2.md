@@ -431,7 +431,7 @@ To illustrate how your personal API keys may be misused:
 
 #### c. Update `api_testing.py`
 
-- Replace the hardcoded key with:
+- Replace the `# EDIT HERE` block (`API_KEY = ""`) with:
 
     ```python
     # EDIT HERE ===================================================
